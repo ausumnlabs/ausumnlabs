@@ -1,6 +1,14 @@
-// 301 redirects from the old WordPress site (ausumnlabs.in) to the new pages.
+﻿// 301 redirects from the old WordPress site (ausumnlabs.in) to the new pages.
 // Next.js removes trailing slashes first, so sources are written without them.
-type Redirect = { source: string; destination: string; permanent: true };
+type Redirect = { source: string; destination: string; permanent: true; has?: Array<{ type: 'host'; value: string }> };
+
+// Send www.ausumnlabs.in to ausumnlabs.in so Google sees one version of each page.
+const wwwToApex: Redirect = {
+  source: '/:path*',
+  has: [{ type: 'host', value: 'www.ausumnlabs.in' }],
+  destination: 'https://ausumnlabs.in/:path*',
+  permanent: true
+};
 
 const map: Array<[string, string]> = [
   ['/bitrix-24', '/bitrix24'],
@@ -30,8 +38,7 @@ const map: Array<[string, string]> = [
   ['/services/training', '/services/training-support']
 ];
 
-export const legacyRedirects: Redirect[] = map.map(([source, destination]) => ({
-  source,
-  destination,
-  permanent: true
-}));
+export const legacyRedirects: Redirect[] = [
+  wwwToApex,
+  ...map.map(([source, destination]): Redirect => ({ source, destination, permanent: true }))
+];

@@ -22,6 +22,18 @@ export function CtaBand() {
   );
 }
 
+export function Screen({ src, w, h, alt, caption, label, eager }: { src: string; w: number; h: number; alt: string; caption?: string; label?: string; eager?: boolean }) {
+  return (
+    <figure className="shot">
+      <div className="shot-frame">
+        <div className="shot-bar" aria-hidden="true"><i /><i /><i /><span>{label || 'ausumnlabs.bitrix24.in'}</span></div>
+        <img src={src} width={w} height={h} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      </div>
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  );
+}
+
 export function PageHero({ eyebrow, title, lead, children, width = '16ch' }: { eyebrow: string; title: string; lead?: string; children?: ReactNode; width?: string }) {
   return (
     <section className="sec dark tight" style={{ paddingTop: 'clamp(56px, 7vw, 96px)' }}>

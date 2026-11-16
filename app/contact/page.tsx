@@ -1,13 +1,15 @@
 import { JsonLd } from '@/components/ui';
-import ContactForm from '@/components/ContactForm';
+import ContactForm, { type Mode } from '@/components/ContactForm';
+import { Icon, type IconName } from '@/components/Icon';
 import { INTERESTS } from '@/lib/form';
+import { INDUSTRIES } from '@/lib/content';
 import { breadcrumbLd, pageMeta } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 
 export const metadata = pageMeta({
   title: 'Contact Ausumn Labs: Book a Bitrix24 Demo',
-  ogTitle: 'See Bitrix24 around your own process.',
-  description: 'Book a Bitrix24 demo or a free CRM audit, or talk to us about a website, mobile app or IT project. Call +91 93680 79747 or WhatsApp Ausumn Labs, Bengaluru.',
+  ogTitle: 'See your own sales process inside Bitrix24.',
+  description: 'Book a free Bitrix24 demo or CRM audit, or talk to us about a website, mobile app or IT project. Call +91 93680 79747 or WhatsApp Ausumn Labs, Bengaluru.',
   path: '/contact',
   keywords: ['Bitrix24 demo', 'contact Bitrix24 partner Bengaluru', 'free CRM audit']
 });
@@ -17,16 +19,55 @@ const INTEREST_KEYS: Record<string, string> = {
   'on-premise': 'On-Premise', migration: 'Migration', web: 'Website or web app', mobile: 'Mobile app',
   data: 'Data and dashboards', cloud: 'Cloud and DevOps', consulting: 'IT consulting'
 };
+const PROJECT_KEYS = ['web', 'mobile', 'data', 'cloud', 'consulting'];
+
+const COPY: Record<Mode, { badge: string; title: [string, string, string]; lead: string; get: Array<[IconName, string, string]> }> = {
+  demo: {
+    badge: 'Free demo · No obligation',
+    title: ['See ', 'your own', ' sales process inside Bitrix24.'],
+    lead: 'Tell us how you sell today. We will show you where leads slip, and how to fix it.',
+    get: [
+      ['chart', 'Your pipeline, mapped live', 'Your stages, sources and team, set up in Bitrix24 while we talk.'],
+      ['search', 'The gaps, named', 'Where enquiries are lost: missed calls, WhatsApp, portals, follow-ups.'],
+      ['file', 'A clear plan and quote', 'The right Bitrix24 plan for your team size, in rupees, and what setup involves.']
+    ]
+  },
+  audit: {
+    badge: 'Free CRM audit · No obligation',
+    title: ['Find out what your CRM ', 'is missing', '.'],
+    lead: 'Already on Bitrix24 or another CRM? We review your setup and tell you what to fix first.',
+    get: [
+      ['search', 'A review of your setup', 'Pipelines, fields, automation, integrations and user access.'],
+      ['clock', 'Where time and leads are lost', 'Manual steps, missed follow-ups and reports built by hand.'],
+      ['file', 'A prioritised fix list', 'What to change first, and what it takes.']
+    ]
+  },
+  project: {
+    badge: 'Websites · Apps · AI · Cloud',
+    title: ['Tell us what you ', 'want to build', '.'],
+    lead: 'Websites, web apps, mobile apps, AI and cloud projects, connected to your CRM from day one.',
+    get: [
+      ['monitor', 'A clear scope', 'Users, screens and must-haves agreed before any build starts.'],
+      ['chart', 'A plan and estimate', 'Timeline, technology and cost, in writing.'],
+      ['users', 'One accountable team', 'Design, build, launch and support from Bengaluru.']
+    ]
+  }
+};
 
 type P = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 export default async function Contact({ searchParams }: P) {
   const sp = await searchParams;
   const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) || '';
-  const mode = one(sp.type) === 'audit' ? 'audit' : 'demo';
-  const interest = INTEREST_KEYS[one(sp.interest)] || INTERESTS[0];
+  const key = one(sp.interest);
+  const type = one(sp.type);
+  const mode: Mode = type === 'audit' ? 'audit' : type === 'project' || PROJECT_KEYS.includes(key) ? 'project' : 'demo';
+  const interest = INTEREST_KEYS[key] || (INDUSTRIES.some((x) => x.slug === key) ? 'Bitrix24 CRM setup' : mode === 'project' ? 'Website or web app' : INTERESTS[0]);
   const plan = one(sp.plan).slice(0, 40);
-  const isDemo = mode === 'demo';
+  const industry = INDUSTRIES.find((x) => x.slug === key);
+  const topic = one(sp.topic).slice(0, 60);
+  const note = industry ? `Industry: ${industry.label}.${topic ? ` Interested in: ${topic}.` : ''}` : undefined;
+  const c = COPY[mode];
 
   const contactLd = {
     '@context': 'https://schema.org',
@@ -38,33 +79,45 @@ export default async function Contact({ searchParams }: P) {
   return (
     <>
       <JsonLd data={[breadcrumbLd([['Contact', '/contact']]), contactLd]} />
-      <section className="sec">
-        <div className="wrap g2">
-          <div className="stack" style={{ gap: 22 }}>
-            <p className="eyebrow" style={{ margin: 0 }}>Talk to Ausumn Labs</p>
-            <h1 className="d1">{isDemo ? 'See Bitrix24 around your own process.' : 'Find out what your CRM is missing.'}</h1>
-            <p className="lead">{isDemo ? 'Tell us how you sell today, and we will tailor the demo. Planning a website, app or IT project? Use the same form.' : 'We will review your setup, or your plans, and point out what to fix first.'}</p>
-            <div className="stack" style={{ gap: 2 }}>
-              <a className="btn ghost" style={{ justifyContent: 'flex-start' }} href={SITE.phoneHref}>Call {SITE.phone}</a>
+      <section className="sec dark glow">
+        <div className="wrap g2 c-grid">
+          <div className="stack c-left" style={{ gap: 28 }}>
+            <div className="stack c-intro" style={{ gap: 18 }}>
+              <span className="badge">{c.badge}</span>
+              <h1 className="d1" style={{ fontSize: 'clamp(38px, 4.8vw, 64px)' }}>{c.title[0]}<span className="serif">{c.title[1]}</span>{c.title[2]}</h1>
+              <p className="lead">{c.lead}</p>
             </div>
-            <div className="row">
-              <a className="linkbtn" href={SITE.whatsapp} target="_blank" rel="noopener">WhatsApp us →</a>
-              <a className="linkbtn" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            <div className="c-why">
+              <h2>What you get</h2>
+              {c.get.map(([icon, t, d]) => (
+                <div className="ok-row" key={t}>
+                  <span className="ic" style={{ width: 40, height: 40, borderRadius: 10 }}><Icon name={icon} size={20} /></span>
+                  <div><b>{t}</b><span>{d}</span></div>
+                </div>
+              ))}
             </div>
-            <address className="small" style={{ fontStyle: 'normal' }}>{SITE.legalName}<br />{SITE.address.street}, {SITE.address.city} {SITE.address.postal}</address>
+            <div className="row btns c-btns">
+              <a className="btn wa-btn" href={SITE.whatsapp} target="_blank" rel="noopener"><Icon name="chat" size={18} />WhatsApp now</a>
+              <a className="btn ghost" href={SITE.phoneHref}><Icon name="call" size={18} />{SITE.phone}</a>
+            </div>
+            <p className="small c-addr">
+              <a href={`mailto:${SITE.email}`} style={{ color: 'var(--amber)' }}>{SITE.email}</a><br />
+              {SITE.legalName}, {SITE.address.street}, {SITE.address.city} {SITE.address.postal}
+            </p>
           </div>
-          <div className="card" style={{ padding: 'clamp(22px, 3vw, 36px)' }}>
-            <ContactForm initialMode={mode} initialInterest={interest} plan={plan || undefined} />
+          <div className="form-card">
+            <ContactForm key={mode} initialMode={mode} initialInterest={interest} plan={plan || undefined} note={note} />
           </div>
         </div>
       </section>
-      <section className="sec white line tight">
+      <section className="sec white tight">
         <div className="wrap">
-          <div className="steps">
-            <div className="step"><h2 className="h4">We reply</h2><p className="small">One of our team contacts you to understand the need.</p></div>
-            <div className="step"><h2 className="h4">We review</h2><p className="small">We look at your process and current tools.</p></div>
-            <div className="step"><h2 className="h4">We show</h2><p className="small">You see a demo around your own workflow.</p></div>
-            <div className="step"><h2 className="h4">You decide</h2><p className="small">You get a clear plan and quote.</p></div>
+          <div className="head"><h2 className="d2">What happens after you submit</h2></div>
+          <div className="nsteps">
+            <div className="nstep"><h3 className="h4">We call you</h3><p>One of our team contacts you to understand the need.</p></div>
+            <div className="nstep"><h3 className="h4">We prepare</h3><p>We look at your process and current tools.</p></div>
+            <div className="nstep"><h3 className="h4">You see it live</h3><p>A demo around your own workflow, online or at your office.</p></div>
+            <div className="nstep"><h3 className="h4">You decide</h3><p>A clear plan and quote. No pressure.</p></div>
           </div>
         </div>
       </section>

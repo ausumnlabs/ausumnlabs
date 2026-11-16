@@ -4,8 +4,17 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { useEffect, useRef, useState } from 'react';
 import { INTERESTS } from '@/lib/form';
+import { SITE } from '@/lib/site';
 
 const TEAMS = ['1 to 5', '6 to 50', '51 to 100', '101 to 250', 'More than 250'];
+
+export type Mode = 'demo' | 'audit' | 'project';
+
+const MODES: Array<{ id: Mode; label: string; title: string; cta: string; msg: string; placeholder: string }> = [
+  { id: 'demo', label: 'CRM demo', title: 'Book your free demo', cta: 'Book my free demo', msg: 'What is not working today? (optional)', placeholder: 'e.g. Leads from 99acres and WhatsApp are not followed up on time' },
+  { id: 'audit', label: 'Free CRM audit', title: 'Get a free CRM audit', cta: 'Request my free audit', msg: 'What do you use today? (optional)', placeholder: 'e.g. Bitrix24 Standard, set up 2 years ago. Agents still track leads in Excel' },
+  { id: 'project', label: 'Website or app', title: 'Tell us about your project', cta: 'Discuss my project', msg: 'What do you want to build? (optional)', placeholder: 'e.g. A property listing website that sends enquiries to our CRM' }
+];
 
 type Fields = { name: string; phone: string; email: string; company: string; interest: string; team: string; msg: string };
 const blank = (interest: string): Fields => ({ name: '', phone: '', email: '', company: '', interest, team: '6 to 50', msg: '' });
@@ -14,16 +23,21 @@ declare global {
   interface Window { turnstile?: { reset: (el?: string | HTMLElement) => void } }
 }
 
-export default function ContactForm({ initialMode, initialInterest, plan }: { initialMode: 'demo' | 'audit'; initialInterest: string; plan?: string }) {
-  const [mode, setMode] = useState<'demo' | 'audit'>(initialMode);
-  const [f, setF] = useState<Fields>(() => ({ ...blank(initialInterest), msg: plan ? `Interested in the ${plan} plan.` : '' }));
+export default function ContactForm({ initialMode, initialInterest, plan, note }: { initialMode: Mode; initialInterest: string; plan?: string; note?: string }) {
+  const [mode, setModeRaw] = useState<Mode>(initialMode);
+  const [f, setF] = useState<Fields>(() => ({ ...blank(initialInterest), msg: note || (plan ? (/CRM$/.test(plan) ? `Interested in ${plan}.` : `Interested in the ${plan} plan.`) : '') }));
   const [tried, setTried] = useState(false);
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [errMsg, setErrMsg] = useState('');
   const hp = useRef<HTMLInputElement>(null);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const cur = MODES.find((m) => m.id === mode) || MODES[0];
 
-  const isDemo = mode === 'demo';
+  const setMode = (m: Mode) => {
+    setModeRaw(m);
+    if (m === 'project' && !['Website or web app', 'Mobile app', 'Data and dashboards', 'Cloud and DevOps', 'IT consulting', 'AI and automation'].includes(f.interest)) setF({ ...f, interest: 'Website or web app' });
+  };
+
   const bad = {
     name: !f.name.trim(),
     phone: f.phone.replace(/\D/g, '').length < 10,
@@ -77,7 +91,7 @@ export default function ContactForm({ initialMode, initialInterest, plan }: { in
       <div className="stack fade" role="status">
         <span className="pill">Request received</span>
         <h2 className="d2">Thank you, {f.name.trim().split(' ')[0]}.</h2>
-        <p className="body">We will contact you shortly to arrange the next step. For anything urgent, call or WhatsApp us on +91 93680 79747.</p>
+        <p className="body">We will contact you shortly to arrange the next step. For anything urgent, call or WhatsApp us on {SITE.phone}.</p>
         <div className="row btns">
           <button type="button" className="btn ghost" onClick={() => { setF(blank(f.interest)); setTried(false); setState('idle'); }}>Send another request</button>
           <Link className="btn primary" href="/">Back to home</Link>
@@ -88,30 +102,35 @@ export default function ContactForm({ initialMode, initialInterest, plan }: { in
 
   return (
     <>
-      <div className="row" role="group" aria-label="What do you need?">
-        <button type="button" className={isDemo ? 'tab on' : 'tab'} aria-pressed={isDemo} onClick={() => setMode('demo')}>Book a demo</button>
-        <button type="button" className={isDemo ? 'tab' : 'tab on'} aria-pressed={!isDemo} onClick={() => setMode('audit')}>Free CRM audit</button>
+      <div className="stack" style={{ gap: 6 }}>
+        <h2 className="d3">{cur.title}</h2>
+        <p className="small">Takes under a minute. We never share your details.</p>
+      </div>
+      <div className="seg" role="group" aria-label="What do you need?">
+        {MODES.map((m) => (
+          <button key={m.id} type="button" className={mode === m.id ? 'tab on' : 'tab'} aria-pressed={mode === m.id} onClick={() => setMode(m.id)}>{m.label}</button>
+        ))}
       </div>
       <form className="stack" onSubmit={submit} noValidate>
         <div className="g2" style={{ gap: 14, gridTemplateColumns: 'repeat(auto-fit, minmax(min(220px, 100%), 1fr))' }}>
           <div className="field">
             <label htmlFor="c-name">Your name</label>
-            <input id="c-name" name="name" autoComplete="name" value={f.name} onChange={set('name')} aria-invalid={tried && bad.name} aria-describedby={tried && bad.name ? 'e-name' : undefined} />
+            <input id="c-name" name="name" autoComplete="name" placeholder="Full name" value={f.name} onChange={set('name')} aria-invalid={tried && bad.name} aria-describedby={tried && bad.name ? 'e-name' : undefined} />
             {tried && bad.name && <span className="err" id="e-name">Please add your name.</span>}
           </div>
           <div className="field">
             <label htmlFor="c-phone">Phone or WhatsApp</label>
-            <input id="c-phone" name="phone" type="tel" autoComplete="tel" value={f.phone} onChange={set('phone')} aria-invalid={tried && bad.phone} aria-describedby={tried && bad.phone ? 'e-phone' : undefined} />
+            <input id="c-phone" name="phone" type="tel" autoComplete="tel" placeholder="+91" value={f.phone} onChange={set('phone')} aria-invalid={tried && bad.phone} aria-describedby={tried && bad.phone ? 'e-phone' : undefined} />
             {tried && bad.phone && <span className="err" id="e-phone">Please add a valid number.</span>}
           </div>
           <div className="field">
             <label htmlFor="c-email">Work email</label>
-            <input id="c-email" name="email" type="email" autoComplete="email" value={f.email} onChange={set('email')} aria-invalid={tried && bad.email} aria-describedby={tried && bad.email ? 'e-email' : undefined} />
+            <input id="c-email" name="email" type="email" autoComplete="email" placeholder="you@company.com" value={f.email} onChange={set('email')} aria-invalid={tried && bad.email} aria-describedby={tried && bad.email ? 'e-email' : undefined} />
             {tried && bad.email && <span className="err" id="e-email">Please add a valid email.</span>}
           </div>
           <div className="field">
             <label htmlFor="c-company">Company</label>
-            <input id="c-company" name="company" autoComplete="organization" value={f.company} onChange={set('company')} />
+            <input id="c-company" name="company" autoComplete="organization" placeholder="Company name" value={f.company} onChange={set('company')} />
           </div>
           <div className="field">
             <label htmlFor="c-interest">Interested in</label>
@@ -127,8 +146,8 @@ export default function ContactForm({ initialMode, initialInterest, plan }: { in
           </div>
         </div>
         <div className="field">
-          <label htmlFor="c-msg">What should we know? (optional)</label>
-          <textarea id="c-msg" name="msg" value={f.msg} onChange={set('msg')} />
+          <label htmlFor="c-msg">{cur.msg}</label>
+          <textarea id="c-msg" name="msg" placeholder={cur.placeholder} value={f.msg} onChange={set('msg')} />
         </div>
         <div className="hp" aria-hidden="true">
           <label htmlFor="c-website">Leave this empty</label>
@@ -140,15 +159,15 @@ export default function ContactForm({ initialMode, initialInterest, plan }: { in
             <div className="cf-turnstile" data-sitekey={siteKey} data-theme="light" />
           </>
         )}
-        <button className="btn primary" type="submit" disabled={state === 'sending'}>
-          {state === 'sending' ? 'Sending…' : isDemo ? 'Request my demo' : 'Request my free audit'}
+        <button className="btn primary" type="submit" disabled={state === 'sending'} style={{ width: '100%', fontSize: 17 }}>
+          {state === 'sending' ? 'Sending…' : cur.cta}
         </button>
         {state === 'error' && (
           <p className="err" role="alert">
-            We could not send your request ({errMsg}). Please try again, or call or WhatsApp us on +91 93680 79747.
+            We could not send your request ({errMsg}). Please try again, or call or WhatsApp us on {SITE.phone}.
           </p>
         )}
-        <p className="small">We use your details only to reply to this request. See our <Link href="/privacy">privacy policy</Link>.</p>
+        <p className="small">Used only to reply to you. See our <Link href="/privacy">privacy policy</Link>.</p>
       </form>
     </>
   );

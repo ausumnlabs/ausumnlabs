@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   const interest = str(b.interest, 80);
   const team = str(b.team, 40);
   const msg = str(b.msg, 3000);
-  const type = b.type === 'audit' ? 'audit' : 'demo';
+  const type = b.type === 'audit' || b.type === 'project' ? b.type : 'demo';
   const page = str(b.page, 200);
   const referrer = str(b.referrer, 300);
   const utm = (b.utm && typeof b.utm === 'object' ? b.utm : {}) as Record<string, unknown>;
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'Form is not connected yet' }, { status: 503 });
   }
 
-  const label = type === 'audit' ? 'Free CRM audit' : 'Demo request';
+  const label = type === 'audit' ? 'Free CRM audit' : type === 'project' ? 'Project enquiry' : 'Demo request';
   const comments = [
     `Request: ${label}`,
     `Interested in: ${interest || '-'}`,
@@ -98,7 +98,9 @@ export async function POST(req: Request) {
   if (assignee) fields.ASSIGNED_BY_ID = Number(assignee);
 
   try {
-    const url = `${hook.replace(/\/?$/, '/')}crm.lead.add.json`;
+    // Keep only https://<portal>/rest/<user>/<token>/ so a pasted example method (e.g. /profile.json) is ignored.
+    const base = hook.trim().match(/^https?:\/\/[^/]+\/rest\/\d+\/[^/?#]+/)?.[0] ?? hook.trim().replace(/\/+$/, '');
+    const url = `${base}/crm.lead.add.json`;
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -15,6 +15,25 @@ export const PLATFORM_GROUPS = [
   { id: 'contact', href: '/bitrix24/contact-center', label: 'Contact center', title: 'Answer every channel from one inbox', text: "Connect WhatsApp, calls, live chat and email so nothing depends on one person's phone.", points: ['WhatsApp and Instagram', 'Telephony and call records', 'Website live chat', 'CRM forms', 'Email'] }
 ];
 
+// Examples shown in the home page strip. We can connect any tool that offers an API or webhook.
+export const INTEGRATIONS = ['Bitrix24', 'WhatsApp Business', '99acres', 'MagicBricks', 'Housing.com', 'NoBroker', 'Facebook Lead Ads', 'Instagram', 'Google Ads', 'IVR and telephony', 'Email', 'Tally', 'Razorpay', 'Google Workspace', 'Microsoft 365', 'Your website'];
+
+export const HOME_PROBLEMS: Array<{ icon: 'inbox' | 'clock' | 'file' | 'grid'; t: string; d: string; fix: string }> = [
+  { icon: 'inbox', t: 'Enquiries in five places', d: 'Calls, WhatsApp, portals, email and your website each hold a different part of the story.', fix: 'One inbox, every lead with its source' },
+  { icon: 'clock', t: "Follow-ups in someone's head", d: 'When a call-back is missed, nobody notices until the buyer has moved on.', fix: 'Automatic reminders and manager alerts' },
+  { icon: 'file', t: 'Reports built by hand', d: 'Managers wait for spreadsheets instead of seeing the pipeline as it stands.', fix: 'Live dashboards, no spreadsheets' },
+  { icon: 'grid', t: 'Too many separate tools', d: 'Sales, tasks, chat and HR sit in apps that do not share any data.', fix: 'One workspace for the whole team' }
+];
+
+export const HOME_SERVICES: Array<{ icon: 'chart' | 'chat' | 'monitor' | 'phone' | 'spark' | 'pulse'; t: string; d: string; href: string }> = [
+  { icon: 'chart', t: 'Bitrix24 implementation', d: 'Pipelines, automation, migration and training through to go-live.', href: '/services/bitrix24-implementation' },
+  { icon: 'chat', t: 'WhatsApp and telephony', d: 'Every call and chat recorded on the customer record.', href: '/services/whatsapp-telephony' },
+  { icon: 'monitor', t: 'Websites and web apps', d: 'Fast sites whose forms feed your CRM from day one.', href: '/services/web-development' },
+  { icon: 'phone', t: 'Mobile apps', d: 'Android and iOS apps for customers and field teams.', href: '/services/mobile-app-development' },
+  { icon: 'spark', t: 'AI and automation', d: 'Assistants, chatbots and AI workflows on your own data.', href: '/services/ai-solutions' },
+  { icon: 'pulse', t: 'Dashboards and reports', d: 'Live numbers for managers, without manual reporting.', href: '/services/data-analytics' }
+];
+
 export const HOME_DEMOS = [
   { ask: 'Summarize this lead for me', tool: 'CoPilot in CRM', out: 'Buyer wants a 2 BHK resale flat in Whitefield. Budget and loan status were discussed on the call.\nNext step: share two options and confirm a Saturday site visit.' },
   { ask: 'If a lead gets no reply in 2 hours, alert the manager', tool: 'Automation Studio', out: 'Workflow drafted:\n1. New lead is assigned to an agent\n2. Wait 2 hours for an activity\n3. If none, notify the sales manager\nReview it, adjust it, then turn it on.' },
@@ -25,6 +44,7 @@ export const HOME_FAQS = [
   { q: 'Should we choose Cloud or On-Premise?', a: 'Cloud is the fastest way to start. On-Premise suits businesses that need their own server, source code access or stricter data control. We help you decide based on your team and your rules.' },
   { q: 'Can you move our data from spreadsheets or another CRM?', a: 'Yes. We map your contacts, deals and history into Bitrix24, then check the result with your team before go-live.' },
   { q: 'Is Bitrix24 AI available on every plan?', a: 'AI features vary by plan. Vibe+ plans add Vibecode, unlimited AI, MCP and unlimited REST API. We will show you what each plan includes.' },
+  { q: 'Can you connect Bitrix24 to the software we already use?', a: 'Yes, if the software offers an API or webhooks. That covers most property portals, telephony and IVR providers, WhatsApp providers, accounting tools, payment gateways and your own website or app.' },
   { q: 'Do you build websites and mobile apps too?', a: 'Yes. Besides Bitrix24, we build custom websites, web apps and mobile apps, and connect them to your CRM so every enquiry lands in one place.' },
   { q: 'Do you support us after go-live?', a: 'Yes. We train your team and offer ongoing support, so the system keeps improving as your business changes.' }
 ];
@@ -118,18 +138,158 @@ export const RE_JOURNEY: Array<[string, string]> = [
   ['Book and hand over', 'Documents and tasks stay with the deal through to closure.']
 ];
 
-export type REModule = { slug: string; label: string; status: string; first: boolean; title: string; text: string; features: TD[]; seoTitle: string; seoDesc: string };
+export type Shot = { src: string; w: number; h: number; title: string; alt: string; caption: string };
 
+export type REModule = {
+  slug: string; label: string; name: string; status: string; first: boolean; who: string;
+  title: string; text: string;
+  problems: Array<[string, string]>;
+  features: TD[];
+  pipelines: Array<{ name: string; stages: string[] }>;
+  steps: TD[];
+  screens: Shot[];
+  faqs: Array<{ q: string; a: string }>;
+  seoTitle: string; seoDesc: string; keywords: string[];
+};
+
+const shot = (name: string, w: number, h: number, title: string, alt: string, caption: string): Shot => ({ src: `/screens/${name}.webp`, w, h, title, alt, caption });
+
+// Content from the Broker CRM and Builder CRM feature sheets (Ausumn Labs, 2026).
 export const RE_MODULES: REModule[] = [
-  { slug: 'brokers', label: 'Brokers', status: 'First module', first: true, title: 'For brokers handling rentals and resale.', text: 'Manage what you have to offer and who is looking, in one place, with your website feeding the CRM.',
-    features: [f('Property inventory', 'Keep rent and resale listings in a dedicated record, not inside deals.'), f('Website to CRM', 'Properties posted on your site flow into Bitrix24 with fields mapped.'), f('Buyer and tenant leads', 'Track each requirement and its source.'), f('Enquiry assignment', 'Send website enquiries to the right person.'), f('Follow-ups', 'Set reminders for calls and site visits.'), f('Mobile access', 'Update leads from the field on the Bitrix24 app.')],
-    seoTitle: 'CRM for Real Estate Brokers on Bitrix24', seoDesc: 'A Bitrix24 CRM for real estate brokers in India: rent and resale inventory, buyer and tenant leads, website-to-CRM listings and site visit follow-ups.' },
-  { slug: 'agencies', label: 'Agencies', status: 'Next module', first: false, title: 'For agencies with teams of agents.', text: 'Give managers a clear view of every agent, lead and listing. This module follows the broker module.',
-    features: [f('Team pipelines', "See each agent's pipeline and activity."), f('Lead routing', 'Share leads by rule across the team.'), f('Shared inventory', 'Give agents one list to work from.'), f('Calls and WhatsApp', 'Keep client conversations on the record.'), f('Permissions', 'Control who can see which data.'), f('Manager reports', 'Review sources, activity and results.')],
-    seoTitle: 'Real Estate Agency CRM on Bitrix24', seoDesc: 'Bitrix24 CRM for real estate agencies: team pipelines, lead routing, shared inventory, call and WhatsApp records and manager reports.' },
-  { slug: 'builders', label: 'Builders', status: 'Next module', first: false, title: 'For builders and developers.', text: 'Run project sales, from enquiry and site visit to booking. This module follows the broker module.',
-    features: [f('Projects and units', 'Track what is available in each project.'), f('Sales enquiries', 'Bring campaign and website leads into CRM.'), f('Site visits', 'Schedule visits and capture the outcome.'), f('Channel partners', 'Record which partner sent each lead.'), f('Booking steps', 'Move each deal through clear stages.'), f('Management view', 'See pipeline across projects.')],
-    seoTitle: 'CRM for Builders and Developers on Bitrix24', seoDesc: 'Bitrix24 CRM for real estate builders and developers: projects and units, site visits, channel partners and booking stages in one system.' }
+  { slug: 'brokers', label: 'Brokers', name: 'Broker CRM', status: 'Live · rentals and resale', first: true, who: 'Brokers handling rentals and resale',
+    title: 'Every enquiry, flat, site visit and token in one place.', text: 'Ready-made pipelines, automation and documents that run a broker’s day, so no lead goes cold and no flat gets double-booked. Built from real broker work in Bengaluru.',
+    problems: [
+      ['Website and portal enquiries sit unanswered for hours', 'Every enquiry becomes a deal with an agent and a 15-minute call task. The manager is alerted if nobody calls.'],
+      ['Agents search WhatsApp and Excel for matching flats', 'One click shows matching flats, scored for budget, BHK, locality and type.'],
+      ['Site visits are forgotten, or customers do not turn up', 'Reminders 24 hours and 2 hours before, plus a ready WhatsApp message for the customer.'],
+      ['The same flat is promised to two clients', 'Property status updates itself: Available, Hold, Under Negotiation, Booked, Sold or Rented.'],
+      ['Token receipts and EOIs are typed by hand', 'EOI and Token Receipt are generated at booking, with your letterhead.'],
+      ['Nobody knows which flats are free in which area', 'An inventory board by city, zone and area, with photo, price and status on every flat.']
+    ],
+    features: [
+      f('Inventory by area', 'City, then zone, then area. Pick East Bengaluru and see Varthur, Whitefield, Sarjapur Road and Bellandur as columns, with available count and typical rent and sale price.'),
+      f('Property details in one tap', 'Photos, price, deposit, size, floor, furnishing, facing, map and owner, without opening the CRM card.'),
+      f('Owner check in one tap', 'Call the owner or send a ready WhatsApp asking if the flat is still available. Listings not updated for 45 days are flagged.'),
+      f('Smart property matching', 'Every requirement ranks your available flats with a score out of 100 and the reason for each match.'),
+      f('Interested clients for a flat', 'Open any flat to see which existing clients want one like it, ranked by fit, with a WhatsApp button for each.'),
+      f('Share flats on WhatsApp', 'Pick flats from the match list and send them to the client in one tap, with prices, sizes and links.'),
+      f('Site visit management', 'Visits linked to customer, flat and deal, with confirmation, reminders, a feedback task and a reschedule task for no-shows.'),
+      f('WhatsApp without a subscription', 'Confirmation, reminder and reschedule messages are written for the agent. One tap opens WhatsApp with the message ready.'),
+      f('Website enquiry routing', 'Website enquiries become deals with the right agent, the enquired flat and Buy or Rent filled in.'),
+      f('Documents', 'Expression of Interest and Token Amount Receipt generated at booking, as PDF.'),
+      f('Lease renewal reminders', 'About 10.5 months after a rental closes, the agent is reminded to call tenant and landlord. Repeat brokerage instead of a lost client.'),
+      f('Business overview', 'Flats available, clients searching, visits this week, feedback due, both pipelines and brokerage earned.')
+    ],
+    pipelines: [
+      { name: 'Buyer / Tenant', stages: ['New Inquiry', 'Requirement Identified', 'Properties Shared', 'Interested', 'Site Visit Scheduled', 'Site Visit Completed', 'Offer / Negotiation', 'Booking / Token', 'Documentation', 'Payment', 'Won'] },
+      { name: 'Seller / Landlord', stages: ['New Property Listed', 'Inspection & Valuation', 'Mandate', 'Agreement Signed', 'Active Marketing', 'Offer Received', 'Negotiation', 'Registration / Handover', 'Won'] }
+    ],
+    steps: [
+      f('Enquiry arrives', 'Deal created, agent assigned, flat linked, Rent set. Call task due in 15 minutes.'),
+      f('No call in 15 minutes', 'The manager gets an alert.'),
+      f('Requirement identified', 'Budget, BHK and locality saved once. Task: share matching flats.'),
+      f('Flats shared', 'Best 3 to 5 matches sent on WhatsApp. Follow-up task if the client is silent for 2 days.'),
+      f('Interested', 'The flat goes on Hold so nobody else promises it.'),
+      f('Site visit', 'Visit record, WhatsApp confirmation, reminders 24 h and 2 h before, feedback task after.'),
+      f('Negotiation and token', 'Flat marked Under Negotiation, then Booked. EOI and Token Receipt generated.'),
+      f('Won', 'Flat marked Rented or Sold, requirement closed as Fulfilled.')
+    ],
+    screens: [
+      shot('broker-inventory', 1600, 1204, 'Inventory by area', 'Broker CRM inventory board showing East Bengaluru areas as columns with flats, prices and BHK', 'Inventory by area. City, then zone, then one column per area, with photo, price and BHK on every flat.'),
+      shot('broker-property', 1600, 1204, 'Every detail in one tap', 'Property panel with photo gallery, price, status, WhatsApp share and owner contact', 'Tap a flat: gallery, price, status, WhatsApp share and a one-tap owner availability check.'),
+      shot('broker-matching', 1600, 1462, 'Smart property matching', 'Matching flats ranked out of 100 for a client requirement, with reasons and a WhatsApp send bar', 'Matching flats for a requirement, scored out of 100 with reasons. Pick flats and send them on WhatsApp.'),
+      shot('broker-interested-clients', 1600, 889, 'Who to call first', 'Clients for this flat, ranked by fit, each with a WhatsApp button', 'Interested clients for a flat: who to call first when a new listing comes in.'),
+      shot('broker-overview', 1600, 1522, 'Your business every morning', 'Broker business overview with inventory status, upcoming site visits and both pipelines', 'Business overview: inventory, visits this week and both pipelines on one screen.'),
+      shot('broker-automation', 1600, 839, 'Automation that runs your day', 'Bitrix24 automation rules on the Buyer / Tenant pipeline', 'Automation rules behind the Buyer / Tenant pipeline: tasks, SLA alert, records and status changes.')
+    ],
+    faqs: [
+      { q: 'Do we need to pay for WhatsApp?', a: 'No. The CRM prepares the message and the agent sends it from their own WhatsApp in one tap. Fully automatic sending is possible later with a paid WhatsApp connector.' },
+      { q: 'Can it bring leads from my website and portals?', a: 'Website enquiries come in automatically. Portals such as 99acres, MagicBricks and Housing.com can be connected through their lead emails or integrations during setup.' },
+      { q: 'Will my agents use it on the phone?', a: 'Yes. Tasks, reminders, calls and WhatsApp links all work in the Bitrix24 mobile app.' },
+      { q: 'Can it handle both sale and rent?', a: 'Yes. The deal type (Buy, Rent, Sell or Lease Out) decides whether a flat ends as Sold or Rented.' },
+      { q: 'Is my data safe?', a: 'Your data stays in your own Bitrix24 account, with user roles and permissions.' }
+    ],
+    seoTitle: 'Broker CRM on Bitrix24 for Real Estate Brokers in India', seoDesc: 'Real estate broker CRM on Bitrix24: inventory by area, property matching, WhatsApp sharing, site visit reminders, EOI and token receipts, and lease renewals. Built by Ausumn Labs, Bengaluru.',
+    keywords: ['real estate broker CRM', 'CRM for property brokers India', 'Bitrix24 real estate broker', 'rental CRM Bengaluru', 'property matching CRM'] },
+
+  { slug: 'builders', label: 'Builders', name: 'Builder CRM', status: 'Live · projects and units', first: true, who: 'Builders and developers selling project by project',
+    title: 'Projects, towers, units, bookings and channel partners in one place.', text: 'Live unit inventory, a sales pipeline from enquiry to handover, automatic unit status, cost sheets, booking documents and channel partner commissions, on your own Bitrix24.',
+    problems: [
+      ['Inventory lives in an Excel sheet that is never up to date', 'A colour-coded tower × floor grid shows every unit’s live status, from Available to Handed Over.'],
+      ['The same unit is promised to two buyers', 'At Unit Selected the unit is blocked for 48 hours. Token, booking and agreement update it automatically.'],
+      ['Cost sheets are worked out on a calculator', 'One-tap cost sheet per unit with base rate, floor rise, PLC, parking, GST and stamp duty, shared on WhatsApp.'],
+      ['Site visits and follow-ups slip', 'The CRM creates the site visit record, a 24-hour reminder and a feedback task.'],
+      ['Channel partner payouts are argued over', 'A commission record with the partner’s %, GST and total payable is created at agreement and tracked to Paid.'],
+      ['Management cannot see sales value or unsold stock', 'A dashboard shows units available, booked value, unsold inventory value, pipeline and commissions.']
+    ],
+    features: [
+      f('Projects', 'RERA number, location, towers, total units, launch and possession dates, base rate, amenities, approved banks and default partner commission.'),
+      f('Units', 'Every flat, villa, plot or shop with tower, floor, configuration, carpet, built-up and super built-up area, facing, car parks and price components.'),
+      f('Inventory grid', 'Tower-by-floor view of the whole project, coloured by status, with price on every unit and an Available only filter for sales calls.'),
+      f('Cost sheet', 'Price breakdown for any unit with a discount box. Save the final price to the unit, or share it on WhatsApp in one tap.'),
+      f('Automatic unit status', 'Unit Selected blocks the unit for 48 hours. Token, Booking, Agreement, Registration and Handover move it along; lost or cancelled deals release it.'),
+      f('Site visits', 'Visit record with project, unit and time, a reminder the day before and a feedback task after.'),
+      f('Stage rules', 'Visit date, unit, token, booking amount and date, agreement value and payment plan are compulsory at the right stages.'),
+      f('Booking documents', 'Booking Form and Booking Amount Receipt generated at booking, numbered BD-1, BD-2 and on.'),
+      f('Channel partners', 'Empanelment pipeline from Applied to Empanelled, with RERA, PAN, GSTIN, localities and commission %.'),
+      f('Commissions', 'Created at agreement for partner-sourced deals with sale value, %, GST and total payable. Eligible at registration, then Invoice, Approved, Paid.'),
+      f('Payment plans and loans', 'Construction-linked, down payment, subvention or flexi plans, home-loan status, amount received, registration and handover dates.'),
+      f('Builder dashboard', 'Per-project KPIs, inventory grid, pipeline by stage and commission totals by status.')
+    ],
+    pipelines: [
+      { name: 'Builder Sales', stages: ['New Lead', 'Requirement', 'Project Suggested', 'Site Visit', 'Follow-up', 'Unit Selected', 'Negotiation', 'Token', 'Booking', 'Agreement', 'Payment Plan', 'Registration', 'Handover'] },
+      { name: 'Channel Partner', stages: ['Applied', 'KYC / RERA', 'Agreement', 'Empanelled'] }
+    ],
+    steps: [
+      f('Enquiry', 'Deal in Builder Sales, call task in 15 minutes, manager alerted if nobody calls.'),
+      f('Project suggested', 'Agent shares the project and 2 to 3 units with their cost sheets.'),
+      f('Site visit', 'Visit record, reminder a day before, feedback task after.'),
+      f('Unit selected', 'Unit blocked for 48 hours. Task to collect the token.'),
+      f('Token and booking', 'Unit moves to Token Received, then Booked. Booking Form and Receipt generated.'),
+      f('Agreement', 'Unit marked Agreement Signed. Partner commission created with GST.'),
+      f('Payment plan and registration', 'Payment schedule and demand letter task. Unit Registered, commission Eligible.'),
+      f('Handover', 'Unit Handed Over, date recorded. Cancelled bookings release the unit.')
+    ],
+    screens: [
+      shot('builder-inventory', 1600, 1669, 'The whole project on one screen', 'Builder CRM dashboard with project KPIs and a tower by floor inventory grid coloured by unit status', 'Project KPIs and the tower × floor inventory grid. Every unit shows its status colour and price.'),
+      shot('builder-cost-sheet', 1600, 1121, 'Cost sheet in ten seconds', 'Cost sheet for a 3 BHK unit with base price, floor rise, PLC, parking, GST and stamp duty', 'Cost sheet on every unit: all-inclusive price in seconds, with discount, save and share on WhatsApp.'),
+      shot('builder-automation', 1600, 839, 'Automation on every stage', 'Bitrix24 automation rules on the Builder Sales pipeline', 'Automation on the Builder Sales pipeline: call task, SLA alert, site visit, unit blocked for 48 hours.')
+    ],
+    faqs: [
+      { q: 'Can we import our price list and units?', a: 'Yes. We import your inventory sheet (tower, floor, unit, areas, rates) during setup.' },
+      { q: 'Can price differ by floor or view?', a: 'Yes. Floor rise and PLC are set per unit, and the cost sheet adds them automatically.' },
+      { q: 'Do channel partners get access?', a: 'By default partners are records with commission tracking. They can be given restricted access later.' },
+      { q: 'Can it send demand letters?', a: 'The Payment Plan stage creates the demand letter task today. Automated demand letters can be added per payment schedule.' },
+      { q: 'Is it separate from the broker CRM?', a: 'Yes. Builder CRM has its own menu, pipelines, fields and documents.' }
+    ],
+    seoTitle: 'Builder CRM on Bitrix24 for Real Estate Developers in India', seoDesc: 'Builder and developer CRM on Bitrix24: tower × floor unit inventory, cost sheets with GST and stamp duty, unit blocking, booking documents and channel partner commissions.',
+    keywords: ['builder CRM India', 'real estate developer CRM', 'CRM for builders', 'Bitrix24 builder CRM', 'channel partner commission CRM', 'unit inventory CRM'] },
+
+  { slug: 'agencies', label: 'Agencies', name: 'Agency CRM', status: 'For multi-agent teams', first: false, who: 'Agencies with teams of agents and branches',
+    title: 'One view of every agent, lead and listing.', text: 'For agencies running several agents or branches. Builds on the Broker CRM with team pipelines, lead routing and manager reports, set up around how your agency works.',
+    problems: [
+      ['Leads go to whoever picks up the phone', 'Leads are shared by rule across agents, by area, project or turn.'],
+      ['Each agent keeps their own list of flats', 'One shared inventory the whole team works from.'],
+      ['Client conversations sit on personal phones', 'Calls and WhatsApp stay on the client record.'],
+      ['Managers chase agents for updates', 'Team pipelines and reports show activity and results by agent.']
+    ],
+    features: [
+      f('Team pipelines', 'See each agent’s pipeline and activity.'),
+      f('Lead routing', 'Share leads by rule across the team.'),
+      f('Shared inventory', 'Give agents one list to work from.'),
+      f('Calls and WhatsApp', 'Keep client conversations on the record.'),
+      f('Permissions', 'Control who can see which data.'),
+      f('Manager reports', 'Review sources, activity and results by agent and branch.')
+    ],
+    pipelines: [],
+    steps: [],
+    screens: [],
+    faqs: [
+      { q: 'How is it different from the Broker CRM?', a: 'It includes the broker tools, plus routing, team pipelines, permissions and reports for managers.' },
+      { q: 'Can each branch see only its own data?', a: 'Yes. Roles and permissions control who sees which leads, listings and reports.' }
+    ],
+    seoTitle: 'Real Estate Agency CRM on Bitrix24', seoDesc: 'Bitrix24 CRM for real estate agencies: team pipelines, lead routing, shared inventory, call and WhatsApp records and manager reports by agent and branch.',
+    keywords: ['real estate agency CRM', 'CRM for property agencies India', 'Bitrix24 real estate agency'] }
 ];
 
 /* ---------------- Industries ---------------- */
@@ -251,12 +411,28 @@ export const FAQS = [
 
 /* ---------------- Plans ---------------- */
 
+// Bitrix24 India list prices in INR per organization per month: [billed annually, billed monthly].
+// Source: bitrix24.in/prices (checked 16 Nov 2026). Taxes such as GST may apply.
+export const PRICES_CHECKED = '16 November 2026';
+
 export const PLAN_ROWS = [
-  { key: 'basic', name: 'Basic', fit: 'Small teams getting started', size: '5 users, 24 GB', ess: [49, 69], vibe: [59, 89], points: ['Sales pipelines and recurring deals', 'Online payments', 'WhatsApp and telephony integration'] },
-  { key: 'standard', name: 'Standard', fit: 'Mid-sized businesses', size: '50 users, 100 GB', ess: [99, 144], vibe: [120, 199], points: ['Unlimited leads, invoices, estimates', 'E-signature and WhatsApp marketing', 'Unlimited projects and boards'], vibeExtra: ['Unlimited AI'] },
-  { key: 'professional', name: 'Professional', fit: 'Companies scaling on automation', size: '100 users, 1 TB', ess: [199, 289], vibe: [240, 399], points: ['Sales automation and call tracking', 'Email marketing and booking', 'RPA, HR and analytics tools'], vibeExtra: ['Unlimited AI'], best: true },
-  { key: 'enterprise', name: 'Enterprise', fit: 'Large and multi-branch teams', size: 'From 250 users, 3 TB', ess: [399, 579], vibe: [480, 799], points: ['Unlimited branches', 'Active Directory, login history', 'Custom branding, priority support'], vibeExtra: ['Priority AI processing'], from: true }
+  { key: 'basic', name: 'Basic', fit: 'Small teams getting started', size: '5 users, 24 GB', inr: [1910, 2990], points: ['Sales pipelines and recurring deals', 'Online payments', 'WhatsApp and telephony integration'] },
+  { key: 'standard', name: 'Standard', fit: 'Mid-sized businesses', size: '50 users, 100 GB', inr: [4790, 6890], points: ['Unlimited leads, invoices, estimates', 'E-signature and WhatsApp marketing', 'Unlimited projects and boards'], vibeExtra: ['Unlimited AI'] },
+  { key: 'professional', name: 'Professional', fit: 'Companies scaling on automation', size: '100 users, 1 TB', inr: [9590, 13790], points: ['Sales automation and call tracking', 'Email marketing and booking', 'RPA, HR and analytics tools'], vibeExtra: ['Unlimited AI'], best: true },
+  { key: 'enterprise', name: 'Enterprise', fit: 'Large and multi-branch teams', size: '250 users, 3 TB', inr: [19190, 27590], points: ['Unlimited branches', 'Active Directory, login history', 'Custom branding, priority support'], vibeExtra: ['Priority AI processing'], tiers: true }
 ];
+
+// Enterprise user tiers: [users, storage, billed annually, billed monthly] in INR per month.
+export const ENTERPRISE_TIERS: Array<[number, string, number, number]> = [
+  [250, '3 TB', 19190, 27590], [500, '5 TB', 28790, 41390], [1000, '6 TB', 47990, 68990], [2000, '8 TB', 95990, 137990],
+  [3000, '10 TB', 143990, 206990], [4000, '12 TB', 191990, 275990], [5000, '15 TB', 239990, 344990], [6000, '18 TB', 287990, 413990],
+  [7000, '21 TB', 335990, 482990], [8000, '24 TB', 383990, 551990], [9000, '27 TB', 431990, 620990], [10000, '30 TB', 479990, 689990]
+];
+
+// On-Premise list prices in INR per year (bitrix24.in, checked 16 Nov 2026).
+export const ONPREM_INR = { business: 299990, enterprise: 2099990 };
+
+export const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
 const Y = '✓', N = '—';
 export const MATRIX: string[][] = [

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { CtaBand, JsonLd } from '@/components/ui';
 import { breadcrumbLd, pageMeta, serviceLd } from '@/lib/seo';
 import { PlansHero, PlansNav } from '../shared';
+import { ONPREM_INR, PRICES_CHECKED, inr } from '@/lib/content';
 
 const description = 'Bitrix24 On-Premise Business and Enterprise editions on your own server or private cloud. Ausumn Labs helps with edition choice, installation, setup and training in India.';
 
@@ -23,11 +24,11 @@ export default function OnPrem() {
         <div className="wrap">
           <div className="head"><h2 className="d2">Two editions to choose from.</h2></div>
           <div className="g3">
-            <div className="plan"><h3 className="d3">Business</h3><div><span className="price">From $3,590</span> <span className="small">per year</span></div><p className="mono" style={{ color: 'var(--mute)' }}>From 50 users</p><ul className="check"><li>CRM, tasks, e-commerce and messenger</li><li>Video calls, documents and CoPilot</li><li>BI Builder, HR and workflow automation</li></ul><Link className="btn ghost small" style={{ marginTop: 'auto' }} href="/contact?interest=on-premise">Enquire</Link></div>
-            <div className="plan"><h3 className="d3">Enterprise</h3><div><span className="price">$24,990</span> <span className="small">per year</span></div><p className="mono" style={{ color: 'var(--mute)' }}>1,000+ users</p><ul className="check"><li>Everything in Business</li><li>Multiple branches and web cluster</li><li>24/7 priority support</li><li>Microservice architecture</li></ul><Link className="btn ghost small" style={{ marginTop: 'auto' }} href="/contact?interest=on-premise">Enquire</Link></div>
+            <div className="plan"><h3 className="d3">Business</h3><div><span className="price">{inr(ONPREM_INR.business)}</span> <span className="small">per year</span></div><p className="small" style={{ fontWeight: 600 }}>50 users included (100, 250 and 500 user options available)</p><ul className="check"><li>CRM, tasks, e-commerce and messenger</li><li>Video calls, documents and CoPilot</li><li>BI Builder, HR and workflow automation</li></ul><Link className="btn ghost small" style={{ marginTop: 'auto' }} href="/contact?interest=on-premise">Enquire</Link></div>
+            <div className="plan"><h3 className="d3">Enterprise</h3><div><span className="price">{inr(ONPREM_INR.enterprise)}</span> <span className="small">per year</span></div><p className="small" style={{ fontWeight: 600 }}>1,000+ users</p><ul className="check"><li>Everything in Business</li><li>Multiple branches and web cluster</li><li>24/7 priority support</li><li>Microservice architecture</li></ul><Link className="btn ghost small" style={{ marginTop: 'auto' }} href="/contact?interest=on-premise">Enquire</Link></div>
             <div className="card"><h3 className="h4">What to know</h3><ul className="check"><li>Hosted on your server or private cloud</li><li>Source code access, except the mobile app and messenger</li><li>Includes 12 months of updates and support</li><li>Annual renewal is 50% of the edition price</li><li>A 30-day trial is available</li></ul></div>
           </div>
-          <p className="small" style={{ marginTop: 20 }}>Global list prices in US$ as published by Bitrix24. <Link href="/contact?interest=on-premise">Ask us for an India quote</Link>, including server setup through our <Link href="/services/cloud-devops">cloud and DevOps team</Link>.</p>
+          <p className="small" style={{ marginTop: 20 }}>Bitrix24 India list prices in rupees per year, as published on bitrix24.in on {PRICES_CHECKED}. GST and other taxes may apply. <Link href="/contact?interest=on-premise">Ask us for an India quote</Link>, including server setup through our <Link href="/services/cloud-devops">cloud and DevOps team</Link>.</p>
         </div>
       </section>
       <section className="sec white line">

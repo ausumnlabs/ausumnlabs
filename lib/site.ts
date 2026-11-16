@@ -52,10 +52,10 @@ export const NAV: NavMenu[] = [
   {
     id: 'real-estate', label: 'Real Estate', href: '/real-estate',
     items: [
-      { href: '/real-estate', label: 'Real estate overview', desc: 'Bitrix24 built around property sales' },
-      { href: '/real-estate/brokers', label: 'Broker module', desc: 'Rent and resale inventory, buyers, tenants' },
-      { href: '/real-estate/agencies', label: 'Agencies', desc: 'Teams, branches, lead routing' },
-      { href: '/real-estate/builders', label: 'Builders and developers', desc: 'Projects, units, channel partners' }
+      { href: '/real-estate', label: 'Real estate overview', desc: 'Our own real estate modules on Bitrix24' },
+      { href: '/real-estate/brokers', label: 'Broker CRM', desc: 'Inventory by area, matching, visits, tokens' },
+      { href: '/real-estate/builders', label: 'Builder CRM', desc: 'Towers, units, cost sheets, partner payouts' },
+      { href: '/real-estate/agencies', label: 'Agency CRM', desc: 'Teams, branches, lead routing, reports' }
     ]
   },
   {
@@ -115,7 +115,7 @@ export const NAV: NavMenu[] = [
 ];
 
 export const FOOTER_COLS: Array<{ title: string; items: Array<[string, string]> }> = [
-  { title: 'Platform', items: [['Bitrix24 CRM', '/bitrix24/crm'], ['Bitrix24 AI', '/ai'], ['Real estate CRM', '/real-estate'], ['Plans and pricing', '/plans'], ['Plan finder', '/plans/finder']] },
+  { title: 'Platform', items: [['Bitrix24 CRM', '/bitrix24/crm'], ['Bitrix24 AI', '/ai'], ['Broker CRM', '/real-estate/brokers'], ['Builder CRM', '/real-estate/builders'], ['Plans and pricing', '/plans'], ['Plan finder', '/plans/finder']] },
   { title: 'Services', items: [['Bitrix24 implementation', '/services/bitrix24-implementation'], ['Custom web development', '/services/web-development'], ['Mobile app development', '/services/mobile-app-development'], ['AI solutions', '/services/ai-solutions'], ['IT consulting', '/services/it-consulting'], ['All services', '/services']] },
   { title: 'Company', items: [['About', '/about'], ['Partner credentials', '/about/partner'], ['Guides', '/resources'], ['FAQ', '/resources/faq'], ['Privacy policy', '/privacy'], ['Terms of use', '/terms']] }
 ];
