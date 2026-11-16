@@ -89,6 +89,13 @@ main > .sec:not(.dark):not(.hx) + .sec:not(.dark):not(.warm):not(.mint){border-t
 .mega-i:hover{background:#F6F6F1}
 .mega-i span{color:var(--mute)}
 .mob{background:#fff;border-color:#EFEFEA}
+/* Mobile menu scrolls inside itself; the page behind stays still */
+.mob.open{position:absolute;top:100%;left:0;right:0;max-height:calc(100vh - 72px);max-height:calc(100dvh - 72px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:32px;box-shadow:0 24px 40px rgba(20,34,28,.12)}
+html.menu-open{overflow:hidden}
+html.menu-open .wa{display:none}
+.mob-t{min-height:56px;font-size:17px}
+.mob-s{padding-left:14px;min-height:46px;display:flex!important;align-items:center;text-decoration:none}
+.mob-s:active,.mob-t:active{background:#F6F6F1}
 .mob-t{color:var(--text);border-color:#EFEFEA}
 .mob-s{color:var(--mute)}
 .tabbar{background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}

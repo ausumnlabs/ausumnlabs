@@ -24,6 +24,19 @@ export default function Header() {
     setMob(false);
   }, [path]);
 
+  // Unlock scroll synchronously before navigation, so the next page starts at the top.
+  const closeMob = () => {
+    document.documentElement.classList.remove('menu-open');
+    setMob(false);
+  };
+
+  // Lock page scroll while the mobile menu is open, so swipes scroll the menu itself.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('menu-open', mob);
+    return () => root.classList.remove('menu-open');
+  }, [mob]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { setMenu(''); setMob(false); }
@@ -94,7 +107,7 @@ export default function Header() {
                 {open && (
                   <div>
                     {m.items.map((i) => (
-                      <Link key={i.href + i.label} className="mob-s" href={i.href}>{i.label}</Link>
+                      <Link key={i.href + i.label} className="mob-s" href={i.href} onClick={closeMob}>{i.label}</Link>
                     ))}
                   </div>
                 )}
@@ -102,7 +115,7 @@ export default function Header() {
             );
           })}
           <div className="row" style={{ paddingTop: 16 }}>
-            <Link className="btn primary" href="/contact">Book a demo</Link>
+            <Link className="btn primary" href="/contact" onClick={closeMob}>Book a demo</Link>
           </div>
         </div>
       </div>
