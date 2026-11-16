@@ -2,7 +2,13 @@ import Link from 'next/link';
 import { CtaBand, Faq, JsonLd } from '@/components/ui';
 import { Icon } from '@/components/Icon';
 import { AiDemo, PipelineDemo, PlatformExplorer } from '@/components/interactive';
-import { GUIDES, HOME_DEMOS, HOME_FAQS, HOME_PROBLEMS, HOME_SERVICES, INDUSTRIES, INTEGRATIONS, ONPREM_INR, PLAN_ROWS, RE_JOURNEY, RE_MODULES, inr } from '@/lib/content';
+import { ScrollStory, WhoWeHelp } from '@/components/IndustryMotion';
+import { CountUp, Tilt } from '@/components/Motion';
+import { HOME_SEGMENTS, HOME_STORY } from '@/lib/industry-stories';
+import type { CSSProperties } from 'react';
+
+const ORANGE = { '--hc': '#D97706', '--hc-soft': '#FEEBD3', '--hc-ink': '#92400E', '--hc2': '#F89924' } as CSSProperties;
+import { GUIDES, HOME_DEMOS, HOME_FAQS, HOME_PROBLEMS, HOME_SERVICES, INTEGRATIONS, ONPREM_INR, PLAN_ROWS, RE_JOURNEY, RE_MODULES, inr } from '@/lib/content';
 import { faqLd, pageMeta } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 
@@ -23,11 +29,14 @@ export default function Home() {
     <>
       <JsonLd data={faqLd(HOME_FAQS)} />
 
-      <section className="sec dark glow">
-        <div className="wrap g2" style={{ alignItems: 'center' }}>
-          <div className="stack" style={{ gap: 24 }}>
+      <section className="sec dark hero-fx">
+        <div className="aurora" aria-hidden="true"><i /><i /><i /></div>
+        <div className="grid-floor" aria-hidden="true" />
+        <div className="stars" aria-hidden="true">{Array.from({ length: 18 }, (_, n) => <i key={n} />)}</div>
+        <div className="wrap g2" style={{ alignItems: 'center', position: 'relative', zIndex: 1 }}>
+          <div className="stack hero-in" style={{ gap: 24 }}>
             <span className="badge"><span style={{ color: 'var(--amber)', display: 'inline-flex' }}><Icon name="award" size={16} /></span>Bitrix24 Silver Partner · Bengaluru</span>
-            <h1 className="d1 hero-h">Never lose a lead to a <span className="serif nowrap">missed follow-up</span> again.</h1>
+            <h1 className="d1 hero-h">Never lose a lead to a <span className="serif nowrap shimmer">missed follow-up</span> again.</h1>
             <p className="lead">We set up Bitrix24 CRM so every call, WhatsApp and portal enquiry lands in one place, gets assigned and gets followed up. Built for growing Indian businesses, with a deep focus on real estate.</p>
             <div className="row btns">
               <Link className="btn primary" href="/contact">Book a free demo</Link>
@@ -39,7 +48,7 @@ export default function Home() {
               <span><Icon name="check" size={18} stroke={2.4} />Cloud or your own server</span>
             </div>
           </div>
-          <PipelineDemo />
+          <Tilt className="glow-frame"><PipelineDemo /></Tilt>
         </div>
       </section>
 
@@ -52,6 +61,18 @@ export default function Home() {
               {INTEGRATIONS.map((x) => <span className="mq-i" key={x + '-2'} aria-hidden="true">{x}</span>)}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="stats-band dark" aria-label="Bitrix24 platform figures">
+        <div className="wrap">
+          <div className="stats">
+            <div className="stat"><b><CountUp to={15} suffix="M+" /></b><span>organisations run on Bitrix24</span></div>
+            <div className="stat"><b><CountUp to={35} suffix="+" /></b><span>tools in one workspace</span></div>
+            <div className="stat"><b><CountUp to={850} suffix="+" /></b><span>apps and integrations</span></div>
+            <div className="stat"><b><CountUp to={PLAN_ROWS[0].inr[0]} prefix="₹" /></b><span>a month for Cloud, billed annually</span></div>
+          </div>
+          <p className="small" style={{ marginTop: 14 }}>Platform figures and prices published by Bitrix24.</p>
         </div>
       </section>
 
@@ -74,6 +95,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <div style={ORANGE}>
+        <WhoWeHelp segments={HOME_SEGMENTS} label="Industry" eyebrow="Industries we serve" lead="One platform, set up for how your industry sells. Pick yours to see the full journey, step by step." contactHref="/contact?x=1" />
+        <ScrollStory steps={HOME_STORY} title={['Now, let’s follow ', 'one lead.']} lead="From the first enquiry to the dashboard, here is what Bitrix24 does at every step, once we set it up for you." eyebrow="How it works" cta="Book a free demo" contactHref="/contact" />
+      </div>
 
       <section className="sec white">
         <div className="wrap">
@@ -160,21 +186,6 @@ export default function Home() {
           <div className="row btns" style={{ marginTop: 24 }}>
             <Link className="btn primary" href="/plans">Compare plans</Link>
             <Link className="btn ghost" href="/plans/finder">Find my plan</Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="sec">
-        <div className="wrap">
-          <div className="head">
-            <p className="eyebrow" style={{ margin: 0 }}>Industries</p>
-            <h2 className="d2">Set up for how <span className="serif" style={{ color: 'var(--ember-ink)' }}>your industry</span> sells.</h2>
-          </div>
-          <div className="g3">
-            <Link className="card svc" href="/real-estate"><span className="ic"><Icon name="grid" /></span><div><h3 className="h4">Real estate</h3><p className="body">Brokers, builders and agencies, on our own modules.</p></div></Link>
-            {INDUSTRIES.map((x) => (
-              <Link className="card svc" href={`/industries/${x.slug}`} key={x.slug}><span className="ic g"><Icon name="chart" /></span><div><h3 className="h4">{x.label}</h3><p className="body">{x.title}</p></div></Link>
-            ))}
           </div>
         </div>
       </section>

@@ -28,7 +28,7 @@ export function Bubbles() {
 }
 
 /* Rotating "We help ___" block with counter, progress bars and a big outlined number. */
-export function WhoWeHelp({ segments, label, lead, contactHref }: { segments: Segment[]; label: string; lead: string; contactHref: string }) {
+export function WhoWeHelp({ segments, label, lead, contactHref, eyebrow = 'Who we help' }: { segments: Segment[]; label: string; lead: string; contactHref: string; eyebrow?: string }) {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const reduced = useReducedMotion();
@@ -46,7 +46,7 @@ export function WhoWeHelp({ segments, label, lead, contactHref }: { segments: Se
       <div className="who-rings" aria-hidden="true"><i /><i /><i /><b /><b /><b /></div>
       <div className="who-num" aria-hidden="true">{pad(i + 1)}</div>
       <div className="wrap who-in">
-        <p className="mono-eyebrow">Who we help</p>
+        <p className="mono-eyebrow">{eyebrow}</p>
         <h2 className="who-h">
           We help <span className="who-word" key={s.who}>{s.who}.</span>
         </h2>
@@ -67,7 +67,7 @@ export function WhoWeHelp({ segments, label, lead, contactHref }: { segments: Se
         <p className="lead" style={{ maxWidth: '46ch' }}>{lead}</p>
         <div className="who-tags">
           <span className="mono-eyebrow" style={{ margin: 0 }}>Explore</span>
-          {s.explore.map((x) => <Link className="hchip" key={x} href={`${contactHref}&topic=${encodeURIComponent(x)}`}>{x} →</Link>)}
+          {s.explore.map((x) => <Link className="hchip" key={x} href={s.href || `${contactHref}&topic=${encodeURIComponent(x)}`}>{x} →</Link>)}
         </div>
       </div>
     </section>

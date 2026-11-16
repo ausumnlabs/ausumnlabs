@@ -33,7 +33,7 @@ export default async function IndustryPage({ params }: P) {
   const ld = [breadcrumbLd([['Industries', '/industries'], [i.label, path]]), serviceLd({ name: `CRM for ${i.label}`, serviceType: 'CRM implementation', description: desc(i), path })];
 
   if (st) {
-    const vars = { '--hc': st.accent, '--hc-soft': st.soft, '--hc-ink': st.ink } as CSSProperties;
+    const vars = { '--hc': st.accent, '--hc-soft': st.soft, '--hc-ink': st.ink, ...(st.accent2 ? { '--hc2': st.accent2 } : {}) } as CSSProperties;
     return (
       <div className="ind" style={vars}>
         <JsonLd data={ld} />

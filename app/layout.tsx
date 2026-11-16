@@ -11,6 +11,7 @@ import '@fontsource/ibm-plex-mono/latin-500.css';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { ScrollFX } from '@/components/Motion';
 import { JsonLd } from '@/components/ui';
 import { SITE } from '@/lib/site';
 import { orgLd } from '@/lib/seo';
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd data={orgLd()} />
         <Header />
         <main id="main">{children}</main>
+        <ScrollFX />
         <Footer />
         {GA && (
           <>
