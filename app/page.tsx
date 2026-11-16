@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import { CtaBand, Faq, JsonLd } from '@/components/ui';
+import { CtaBand, Faq, JsonLd, Screen } from '@/components/ui';
 import { Icon } from '@/components/Icon';
-import { AiDemo, PipelineDemo, PlatformExplorer } from '@/components/interactive';
+import { AiDemo, PlatformExplorer } from '@/components/interactive';
 import { ScrollStory, WhoWeHelp } from '@/components/IndustryMotion';
-import { CountUp, Tilt } from '@/components/Motion';
+import { CountUp, Showcase } from '@/components/Motion';
 import { HOME_SEGMENTS, HOME_STORY } from '@/lib/industry-stories';
 import type { CSSProperties } from 'react';
 
-const ORANGE = { '--hc': '#D97706', '--hc-soft': '#FEEBD3', '--hc-ink': '#92400E', '--hc2': '#F89924' } as CSSProperties;
+const ORANGE = { '--hc': '#D63C15', '--hc-soft': '#FDEBE5', '--hc-ink': '#B3330F', '--hc2': '#5B5FE0' } as CSSProperties;
 import { GUIDES, HOME_DEMOS, HOME_FAQS, HOME_PROBLEMS, HOME_SERVICES, INTEGRATIONS, ONPREM_INR, PLAN_ROWS, RE_JOURNEY, RE_MODULES, inr } from '@/lib/content';
 import { faqLd, pageMeta } from '@/lib/seo';
 import { SITE } from '@/lib/site';
@@ -25,30 +25,41 @@ export const metadata = {
 
 export default function Home() {
   const cloudFrom = inr(PLAN_ROWS[0].inr[0]);
+  const BUILDER_SHOT = RE_MODULES.find((m) => m.slug === 'builders')!.screens[0];
   return (
     <>
       <JsonLd data={faqLd(HOME_FAQS)} />
 
-      <section className="sec dark hero-fx">
-        <div className="aurora" aria-hidden="true"><i /><i /><i /></div>
-        <div className="grid-floor" aria-hidden="true" />
-        <div className="stars" aria-hidden="true">{Array.from({ length: 18 }, (_, n) => <i key={n} />)}</div>
-        <div className="wrap g2" style={{ alignItems: 'center', position: 'relative', zIndex: 1 }}>
-          <div className="stack hero-in" style={{ gap: 24 }}>
-            <span className="badge"><span style={{ color: 'var(--amber)', display: 'inline-flex' }}><Icon name="award" size={16} /></span>Bitrix24 Silver Partner · Bengaluru</span>
-            <h1 className="d1 hero-h">Never lose a lead to a <span className="serif nowrap shimmer">missed follow-up</span> again.</h1>
-            <p className="lead">We set up Bitrix24 CRM so every call, WhatsApp and portal enquiry lands in one place, gets assigned and gets followed up. Built for growing Indian businesses, with a deep focus on real estate.</p>
-            <div className="row btns">
-              <Link className="btn primary" href="/contact">Book a free demo</Link>
-              <a className="btn wa-btn" href={SITE.whatsapp} target="_blank" rel="noopener"><Icon name="chat" size={18} />WhatsApp us</a>
-            </div>
-            <div className="ticks">
-              <span><Icon name="check" size={18} stroke={2.4} />Setup, training and support</span>
-              <span><Icon name="check" size={18} stroke={2.4} />Prices in rupees</span>
-              <span><Icon name="check" size={18} stroke={2.4} />Cloud or your own server</span>
-            </div>
+      <section className="hx">
+        <div className="hx-aura" aria-hidden="true"><i /><i /><i /></div>
+        <div className="hx-dots" aria-hidden="true" />
+        <div className="wrap">
+          <span className="hx-pill"><i />Bitrix24 Silver Partner · CRM · AI · Real estate</span>
+          <h1 className="hx-h1">
+            <span className="ln"><span>Never lose</span></span>
+            <span className="ln"><span>a lead to a</span></span>
+            <span className="ln"><span className="serif">missed follow-up.</span></span>
+          </h1>
+          <p className="hx-lead">We set up Bitrix24 so every call, WhatsApp and portal enquiry lands in one place, gets assigned in seconds and gets followed up, for growing Indian businesses, with deep focus on real estate.</p>
+          <div className="hx-cta">
+            <Link className="btn dark-btn" href="/contact">Book a free demo →</Link>
+            <a className="btn ghost" href={SITE.whatsapp} target="_blank" rel="noopener"><Icon name="chat" size={18} />WhatsApp us</a>
           </div>
-          <Tilt className="glow-frame"><PipelineDemo /></Tilt>
+          <div className="hx-trust">
+            <span><Icon name="check" size={17} stroke={2.4} />Setup, training and support</span>
+            <span><Icon name="check" size={17} stroke={2.4} />Plans from {cloudFrom}/month</span>
+            <span><Icon name="check" size={17} stroke={2.4} />Our own Broker and Builder CRM</span>
+          </div>
+          <div className="hx-stage">
+            <div className="hx-glow" aria-hidden="true" />
+            <Showcase>
+              <Screen {...BUILDER_SHOT} caption={undefined} eager />
+            </Showcase>
+            <div className="chip c1" aria-hidden="true"><span className="ci" style={{ background: '#E6E7FB', color: '#4B4FC9' }}><Icon name="inbox" size={18} /></span><div><b>New lead · 99acres</b><span>Assigned to Priya in 4 s</span></div></div>
+            <div className="chip c2" aria-hidden="true"><span className="ci" style={{ background: '#E3F6EE', color: '#0B6B50' }}><Icon name="check" size={18} stroke={2.6} /></span><div><b>Site visit confirmed</b><span>WhatsApp reminder sent</span></div></div>
+            <div className="chip c3" aria-hidden="true"><span className="ci" style={{ background: '#FDEBE5', color: '#B3330F' }}><Icon name="file" size={18} /></span><div><b>Token received</b><span>Receipt BD-14 generated</span></div></div>
+            <div className="chip c4" aria-hidden="true"><span className="ci" style={{ background: '#FEF3DC', color: '#8A5A00' }}><Icon name="spark" size={18} /></span><div><b>CoPilot summary ready</b><span>Call notes filled by AI</span></div></div>
+          </div>
         </div>
       </section>
 

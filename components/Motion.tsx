@@ -15,7 +15,7 @@ export function ScrollFX() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const els = Array.from(document.querySelectorAll<HTMLElement>(TARGETS)).filter(
-      (el) => !el.closest('.story, .who, .ind-hero, .hero-fx') && el.getBoundingClientRect().top > window.innerHeight * 0.92
+      (el) => !el.closest('.story, .who, .ind-hero, .hero-fx, .hx') && el.getBoundingClientRect().top > window.innerHeight * 0.92
     );
     els.forEach((el) => el.classList.add('rv-item'));
     const io = new IntersectionObserver((entries) => {
@@ -59,6 +59,29 @@ export function CountUp({ to, suffix = '', prefix = '' }: { to: number; suffix?:
     return () => io.disconnect();
   }, [to]);
   return <span ref={ref}>{prefix}{n.toLocaleString('en-IN')}{suffix}</span>;
+}
+
+/* Hero product shot: starts tilted back, flattens as the page scrolls. */
+export function Showcase({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el?.style.setProperty('--p', '1'); return; }
+    let raf = 0;
+    const on = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const p = Math.min(Math.max((window.innerHeight - r.top) / (window.innerHeight * 0.9), 0), 1);
+        el.style.setProperty('--p', p.toFixed(3));
+      });
+    };
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on);
+    return () => { window.removeEventListener('scroll', on); window.removeEventListener('resize', on); cancelAnimationFrame(raf); };
+  }, []);
+  return <div ref={ref} className="hx-screen">{children}</div>;
 }
 
 /* Gentle 3D tilt that follows the pointer (desktop only). */

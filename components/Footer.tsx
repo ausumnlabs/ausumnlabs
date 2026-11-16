@@ -9,9 +9,9 @@ export default function Footer() {
           <div className="foot-g">
             <div>
               <Link className="logo" href="/" aria-label="Ausumn Labs home">
-                <img src="/brand/ausumn-labs-on-dark.svg" alt="Ausumn Labs" width={125} height={60} />
+                <img src="/brand/ausumn-labs.svg" alt="Ausumn Labs" width={125} height={60} />
               </Link>
-              <p className="small" style={{ color: 'var(--mute-dark)', marginTop: 8, maxWidth: '32ch' }}>
+              <p className="small" style={{ marginTop: 8, maxWidth: '32ch' }}>
                 Bitrix24 Silver Partner and complete IT solutions, Bengaluru. {SITE.legalName}.
               </p>
             </div>
@@ -28,7 +28,7 @@ export default function Footer() {
               <a className="foot-b" href={SITE.phoneHref}>{SITE.phone}</a>
               <a className="foot-b" href={SITE.phone2Href}>{SITE.phone2}</a>
               <a className="foot-b" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-              <address className="small" style={{ fontStyle: 'normal', color: 'var(--mute-dark)', marginTop: 8 }}>
+              <address className="small" style={{ fontStyle: 'normal', marginTop: 8 }}>
                 {SITE.address.street}, {SITE.address.city} {SITE.address.postal}
               </address>
             </div>

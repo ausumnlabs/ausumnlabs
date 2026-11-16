@@ -10,6 +10,14 @@ export default function Header() {
   const [menu, setMenu] = useState('');
   const [mob, setMob] = useState(false);
   const [mobOpen, setMobOpen] = useState('');
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 40);
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    return () => window.removeEventListener('scroll', on);
+  }, []);
 
   useEffect(() => {
     setMenu('');
@@ -30,11 +38,11 @@ export default function Header() {
   const active = NAV.find((m) => m.id === menu);
 
   return (
-    <header className="bar" onMouseLeave={() => setMenu('')}>
+    <header className={scrolled && !menu && !mob ? 'bar scrolled' : 'bar'} onMouseLeave={() => setMenu('')}>
       <a className="skip" href="#main">Skip to content</a>
       <div className="wrap bar-in">
         <Link className="logo" href="/" aria-label="Ausumn Labs home">
-          <img src="/brand/ausumn-labs-on-dark.svg" alt="Ausumn Labs" width={100} height={48} />
+          <img src="/brand/ausumn-labs.svg" alt="Ausumn Labs" width={100} height={48} />
         </Link>
         <nav className="nav" aria-label="Main">
           {NAV.map((m) => (
@@ -51,7 +59,7 @@ export default function Header() {
             </button>
           ))}
         </nav>
-        <div className="row bar-cta dark">
+        <div className="row bar-cta">
           <Link className="btn primary small" href="/contact">Book a demo</Link>
         </div>
         <button className="burger" type="button" onClick={() => setMob(!mob)} aria-label={mob ? 'Close menu' : 'Open menu'} aria-expanded={mob}>
@@ -93,7 +101,7 @@ export default function Header() {
               </div>
             );
           })}
-          <div className="row dark" style={{ paddingTop: 16 }}>
+          <div className="row" style={{ paddingTop: 16 }}>
             <Link className="btn primary" href="/contact">Book a demo</Link>
           </div>
         </div>
