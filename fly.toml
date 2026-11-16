@@ -1,0 +1,33 @@
+# Fly.io config for the Ausumn Labs website.
+# Change `app` if the name is taken when you run `fly launch`.
+app = "ausumnlabs-web"
+primary_region = "bom"
+
+[build]
+  [build.args]
+    NEXT_PUBLIC_SITE_URL = "https://ausumnlabs.in"
+    # NEXT_PUBLIC_GA_ID = "G-XXXXXXX"
+    # NEXT_PUBLIC_TURNSTILE_SITE_KEY = ""
+    # NEXT_PUBLIC_GSC_VERIFICATION = ""
+
+[env]
+  NEXT_PUBLIC_SITE_URL = "https://ausumnlabs.in"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    path = "/api/health"
+    timeout = "5s"
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
