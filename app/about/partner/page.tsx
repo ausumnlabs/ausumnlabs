@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CtaBand, JsonLd, PageHero, SubNav } from '@/components/ui';
+import { TILES } from '@/lib/hero-tiles';
 import { breadcrumbLd, pageMeta } from '@/lib/seo';
 import { ABOUT_NAV as aboutNav } from '@/lib/site';
 
@@ -15,7 +16,7 @@ export default function Partner() {
   return (
     <>
       <JsonLd data={breadcrumbLd([['About', '/about'], ['Partner credentials', '/about/partner']])} />
-      <PageHero eyebrow="Partner credentials" title="Why you can trust our Bitrix24 work." width="17ch" />
+      <PageHero eyebrow="Partner credentials" title="Why you can trust our Bitrix24 work." tiles={TILES.about} />
       <SubNav label="Company" items={aboutNav} current="/about/partner" />
       <section className="sec">
         <div className="wrap g2">

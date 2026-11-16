@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Hero } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import { notFound } from 'next/navigation';
 import { Check, CtaBand, Faq, JsonLd, Steps, SubNav } from '@/components/ui';
 import { SERVICES } from '@/lib/content';
@@ -36,17 +38,8 @@ export default async function ServicePage({ params }: P) {
   return (
     <>
       <JsonLd data={ld} />
-      <section className="sec dark tight" style={{ paddingTop: 'clamp(56px, 7vw, 96px)' }}>
-        <div className="wrap stack" style={{ gap: 18 }}>
-          <p className="eyebrow" style={{ margin: 0 }}>{s.eyebrow}</p>
-          <h1 className="d1" style={{ maxWidth: '17ch' }}>{s.title}</h1>
-          <p className="lead">{s.text}</p>
-          <div className="row btns">
-            <Link className="btn primary" href={contactHref}>{s.cta}</Link>
-            <a className="btn ghost" href="https://wa.me/919368079747" target="_blank" rel="noopener">WhatsApp us</a>
-          </div>
-        </div>
-      </section>
+      <Hero eyebrow={s.eyebrow} title={s.title} lead={s.text} tiles={TILES.services} size="sm"
+        actions={<><Link className="btn primary" href={contactHref}>{s.cta}</Link><a className="btn ghost" href="https://wa.me/919368079747" target="_blank" rel="noopener">WhatsApp us</a></>} />
       <SubNav label={s.group === 'bitrix24' ? 'Bitrix24 services' : 'Development and IT services'} items={siblings.map((x) => ({ href: `/services/${x.slug}`, label: x.label }))} current={path} />
       <section className="sec">
         <div className="wrap g2">

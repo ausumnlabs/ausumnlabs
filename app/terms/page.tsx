@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { JsonLd, PageHero } from '@/components/ui';
+import { TILES } from '@/lib/hero-tiles';
 import { breadcrumbLd, pageMeta } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 
@@ -13,7 +14,7 @@ export default function Terms() {
   return (
     <>
       <JsonLd data={breadcrumbLd([['Terms of use', '/terms']])} />
-      <PageHero eyebrow="Legal" title="Terms of use" />
+      <PageHero eyebrow="Legal" title="Terms of use" tiles={TILES.legal} />
       <section className="sec">
         <div className="wrap">
           <div className="prose">

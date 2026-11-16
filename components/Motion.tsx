@@ -15,7 +15,7 @@ export function ScrollFX() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const els = Array.from(document.querySelectorAll<HTMLElement>(TARGETS)).filter(
-      (el) => !el.closest('.story, .who, .ind-hero, .hero-fx, .hx') && el.getBoundingClientRect().top > window.innerHeight * 0.92
+      (el) => !el.closest('.story, .who, .ind-hero, .hero-fx, .hx, .hero2, .hero-light') && el.getBoundingClientRect().top > window.innerHeight * 0.92
     );
     els.forEach((el) => el.classList.add('rv-item'));
     const io = new IntersectionObserver((entries) => {

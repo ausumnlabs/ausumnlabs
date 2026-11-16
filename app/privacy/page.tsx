@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { JsonLd, PageHero } from '@/components/ui';
+import { TILES } from '@/lib/hero-tiles';
 import { breadcrumbLd, pageMeta } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 
@@ -13,7 +14,7 @@ export default function Privacy() {
   return (
     <>
       <JsonLd data={breadcrumbLd([['Privacy policy', '/privacy']])} />
-      <PageHero eyebrow="Legal" title="Privacy policy" />
+      <PageHero eyebrow="Legal" title="Privacy policy" tiles={TILES.legal} />
       <section className="sec">
         <div className="wrap">
           <div className="prose">

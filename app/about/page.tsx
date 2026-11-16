@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CtaBand, JsonLd, PageHero, SubNav } from '@/components/ui';
+import { TILES } from '@/lib/hero-tiles';
 import { breadcrumbLd, pageMeta } from '@/lib/seo';
 import { ABOUT_NAV as aboutNav } from '@/lib/site';
 
@@ -15,7 +16,7 @@ export default function About() {
   return (
     <>
       <JsonLd data={breadcrumbLd([['About', '/about']])} />
-      <PageHero eyebrow="About us" title="Built around how Indian businesses really sell." width="17ch" />
+      <PageHero eyebrow="About us" title="Built around how Indian businesses really sell." tiles={TILES.about} />
       <SubNav label="Company" items={aboutNav} current="/about" />
       <section className="sec">
         <div className="wrap g2">

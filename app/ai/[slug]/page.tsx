@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Hero } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import { notFound } from 'next/navigation';
 import { Check, CtaBand, JsonLd } from '@/components/ui';
 import { AiDemo } from '@/components/interactive';
@@ -27,16 +29,8 @@ export default async function AiCap({ params }: P) {
   return (
     <>
       <JsonLd data={[breadcrumbLd([['AI', '/ai'], [c.label, path]]), serviceLd({ name: c.seoTitle, serviceType: 'AI implementation', description: c.seoDesc, path })]} />
-      <section className="sec dark tight" style={{ paddingTop: 'clamp(56px, 7vw, 96px)' }}>
-        <div className="wrap stack" style={{ gap: 18 }}>
-          <p className="eyebrow" style={{ margin: 0 }}>Bitrix24 {c.label}</p>
-          <h1 className="d1" style={{ maxWidth: '17ch' }}>{c.title}</h1>
-          <p className="lead">{c.text}</p>
-          <div className="row btns">
-            <Link className="btn primary" href="/contact?interest=ai">See it in a live demo</Link>
-          </div>
-        </div>
-      </section>
+      <Hero eyebrow={`Bitrix24 ${c.label}`} title={c.title} lead={c.text} tiles={TILES.ai} size="sm"
+        actions={<Link className="btn primary" href="/contact?interest=ai">See it in a live demo</Link>} />
       <AiNav current={path} />
       <section className="sec">
         <div className="wrap g2">

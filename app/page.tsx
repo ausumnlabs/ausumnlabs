@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Backdrop } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import { CtaBand, Faq, JsonLd, Screen } from '@/components/ui';
 import { Icon } from '@/components/Icon';
 import { AiDemo, PlatformExplorer } from '@/components/interactive';
@@ -32,9 +34,10 @@ export default function Home() {
 
       <section className="hx">
         <div className="hx-aura" aria-hidden="true"><i /><i /><i /></div>
+        <Backdrop tiles={TILES.home} />
         <div className="hx-dots" aria-hidden="true" />
         <div className="wrap">
-          <span className="hx-pill"><i />Bitrix24 Silver Partner · CRM · AI · Real estate</span>
+          <span className="hx-pill"><i />Ausumn Labs</span>
           <h1 className="hx-h1">
             <span className="ln"><span>Never lose</span></span>
             <span className="ln"><span>a lead to a</span></span>

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { SubNav } from '@/components/ui';
 import { BITRIX24 } from '@/lib/content';
+import { Hero } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 
 export function B24Hero({
   eyebrow = 'Bitrix24 Silver Partner, Bengaluru',
@@ -8,17 +10,8 @@ export function B24Hero({
   lead = 'CRM, projects, communication, websites, HR and automation in one platform. We configure Bitrix24 around your process and train your team to use it.'
 }: { eyebrow?: string; title?: string; lead?: string }) {
   return (
-    <section className="sec dark">
-      <div className="wrap stack" style={{ gap: 22 }}>
-        <p className="eyebrow" style={{ margin: 0 }}>{eyebrow}</p>
-        <h1 className="d1" style={{ maxWidth: '16ch' }}>{title}</h1>
-        <p className="lead">{lead}</p>
-        <div className="row btns">
-          <Link className="btn primary" href="/contact">Book a demo</Link>
-          <Link className="btn ghost" href="/plans">See plans</Link>
-        </div>
-      </div>
-    </section>
+    <Hero eyebrow={eyebrow} title={title} lead={lead} tiles={TILES.bitrix24}
+      actions={<><Link className="btn primary" href="/contact">Book a demo</Link><Link className="btn ghost" href="/plans">See plans</Link></>} />
   );
 }
 

@@ -175,4 +175,74 @@ main > .sec:not(.dark):not(.hx) + .sec:not(.dark):not(.warm):not(.mint){border-t
 @media (max-width:900px){.chip.c3,.chip.c4{display:none}.chip.c1{left:2%;top:-6%}.chip.c2{right:2%;top:auto;bottom:16%}}
 @media (max-width:560px){.chip{padding:8px 10px;font-size:12px}.chip .ci{width:28px;height:28px}.chip span{display:none}.hx-screen{transform:none}}
 
-@media (prefers-reduced-motion:reduce){.serif,.shimmer,.grad,.hx-aura i,.hx-glow,.chip,.hx-pill i{animation:none!important}.hx-screen{transform:none}}
+/* =====================================================================
+   Shared page hero ("hero2") used on every page
+   ===================================================================== */
+.hero2{position:relative;overflow:hidden;background:var(--cream);padding-block:clamp(56px,7.5vw,108px) clamp(56px,7vw,100px)}
+.hero2-in{position:relative;z-index:2}
+.hero2-center{text-align:center}
+.hero2-center .hero2-text{display:flex;flex-direction:column;align-items:center}
+.hero2 .hx-h1{max-width:17ch;font-size:clamp(36px,5.6vw,84px)}
+.hero2 .hx-h1 .ln{white-space:normal!important}
+.hero2-sm .hx-h1{font-size:clamp(34px,4.6vw,66px)}
+.hero2-split .hero2-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(440px,100%),1fr));gap:clamp(32px,5vw,64px);align-items:center}
+.hero2-split .hx-h1{margin-left:0;text-align:left;font-size:clamp(34px,4.4vw,64px);max-width:18ch}
+.hero2-split .hx-lead{margin-left:0;text-align:left}
+.hero2-split .hx-cta,.hero2-split .hx-trust{justify-content:flex-start}
+.hero2-visual{position:relative;animation:screenin 1.1s .35s cubic-bezier(.2,.8,.2,1) both}
+.hero2-visual::before{content:"";position:absolute;inset:6%;border-radius:40px;background:var(--grad);background-size:220% 100%;filter:blur(60px);opacity:.32;z-index:-1;animation:gradmove 8s ease-in-out infinite alternate}
+.hx-trust .pill{font-size:13px}
+
+/* Floating category cards */
+.bd{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hx > .bd{height:min(820px,100%)}
+.bd-orbit{position:absolute;left:50%;top:44%;width:min(1100px,92vw);aspect-ratio:2.4;transform:translate(-50%,-50%)}
+.bd-orbit i{position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(20,34,28,.10);animation:spin 80s linear infinite}
+.bd-orbit i:nth-child(2){inset:14% 10%;border-style:solid;border-color:rgba(91,95,224,.10);animation-duration:120s;animation-direction:reverse}
+.bd-t{--tc:#4B4FC9;--tcs:#E6E7FB;position:absolute;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:16px;background:rgba(255,255,255,.78);border:1px solid rgba(20,34,28,.07);box-shadow:0 14px 34px rgba(20,34,28,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;
+  animation:bdin .9s calc(.35s + var(--n) * 90ms) cubic-bezier(.2,.8,.2,1) both,bdfloat calc(7s + var(--n) * .7s) calc(var(--n) * -1.1s) ease-in-out infinite}
+.bd-t > i{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--tcs);color:var(--tc);flex:none}
+@keyframes bdin{from{opacity:0;scale:.8;filter:blur(6px)}to{opacity:1;scale:1;filter:none}}
+@keyframes bdfloat{0%,100%{translate:0 0}50%{translate:0 -14px}}
+.tone-indigo{--tc:#4B4FC9;--tcs:#E6E7FB}.tone-teal{--tc:#0E7490;--tcs:#DDF4F8}.tone-mint{--tc:#0B6B50;--tcs:#E2F5EE}.tone-orange{--tc:#B3330F;--tcs:#FDEBE5}
+.tone-rose{--tc:#BE123C;--tcs:#FDE6EB}.tone-amber{--tc:#8A5A00;--tcs:#FEF3DC}.tone-violet{--tc:#6D28D9;--tcs:#EFE7FD}.tone-blue{--tc:#1D4ED8;--tcs:#E6EEFD}
+.tone-hc{--tc:var(--hc-ink);--tcs:var(--hc-soft)}
+/* Positions: four cards down each side, clear of the centred text */
+.bd-t:nth-of-type(1){left:2%;top:12%}.bd-t:nth-of-type(2){left:7%;top:36%}.bd-t:nth-of-type(3){left:1.5%;top:60%}.bd-t:nth-of-type(4){left:8%;top:82%}
+.bd-t:nth-of-type(5){right:2%;top:10%}.bd-t:nth-of-type(6){right:7.5%;top:34%}.bd-t:nth-of-type(7){right:1.5%;top:58%}.bd-t:nth-of-type(8){right:8%;top:80%}
+/* Split heroes: cards sit in the top and bottom margins */
+.bd-compact .bd-orbit{left:30%}
+.bd-compact .bd-t:nth-of-type(1){left:2%;top:4%}.bd-compact .bd-t:nth-of-type(2){left:28%;top:3%}.bd-compact .bd-t:nth-of-type(3){left:3%;top:auto;bottom:4%}.bd-compact .bd-t:nth-of-type(4){left:30%;top:auto;bottom:3%}
+.bd-compact .bd-t:nth-of-type(5){right:3%;top:3%}.bd-compact .bd-t:nth-of-type(6){right:30%;top:4%}.bd-compact .bd-t:nth-of-type(7){right:2%;top:auto;bottom:3%}.bd-compact .bd-t:nth-of-type(8){display:none}
+.bd-compact .bd-t{font-size:12.5px;padding:6px 11px 6px 6px;opacity:.92}
+.bd-compact .bd-t > i{width:28px;height:28px}
+/* Medium screens: icon-only bubbles at the edges */
+@media (max-width:1240px){
+  .bd-t{padding:8px;border-radius:14px}
+  .bd-t > span{display:none}
+  .bd-t:nth-of-type(2),.bd-t:nth-of-type(6){display:none}
+}
+@media (max-width:900px){.bd-compact .bd-t{display:none}.bd-compact .bd-t:nth-of-type(1),.bd-compact .bd-t:nth-of-type(5){display:flex}}
+@media (max-width:640px){
+  .bd-t{padding:6px;opacity:.85}
+  .bd-t > i{width:28px;height:28px}
+  .bd-t:nth-of-type(3),.bd-t:nth-of-type(7){display:none}
+  .bd-t:nth-of-type(1){left:3%;top:3%}.bd-t:nth-of-type(5){right:3%;top:3%}
+  .bd-t:nth-of-type(4){left:3%;top:auto;bottom:3%}.bd-t:nth-of-type(8){right:3%;top:auto;bottom:3%}
+  .hx > .bd{height:100%}
+}
+
+.ind-hero .wrap{z-index:2}
+
+/* Contact hero on the light background */
+.hero-light{background:var(--cream);position:relative;overflow:hidden}
+.hero-light .c-why{background:#fff;border-color:#ECECE6;box-shadow:var(--shadow)}
+.hero-light .c-why h2{color:var(--ember-ink)}
+.hero-light .ok-row b{color:var(--text)}
+.hero-light .ok-row span{color:var(--mute)}
+.hero-light .badge{background:#fff;border-color:#E4E2F5;color:#4B4FC9}
+.hero-light .form-card{box-shadow:0 30px 80px rgba(20,34,28,.14)}
+.hero-light .wrap{position:relative;z-index:2}
+@media (max-width:900px){.hero-light .bd{display:none}}
+
+@media (prefers-reduced-motion:reduce){.serif,.shimmer,.grad,.hx-aura i,.hx-glow,.chip,.hx-pill i,.bd-t,.bd-orbit i,.hero2-visual::before{animation:none!important}.hx-screen{transform:none}}

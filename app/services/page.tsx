@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CtaBand, JsonLd, PageHero, Steps } from '@/components/ui';
+import { TILES } from '@/lib/hero-tiles';
 import { SERVICES } from '@/lib/content';
 import { breadcrumbLd, pageMeta } from '@/lib/seo';
 import { SITE } from '@/lib/site';
@@ -25,7 +26,7 @@ export default function ServicesPage() {
   return (
     <>
       <JsonLd data={[breadcrumbLd([['Services', '/services']]), list]} />
-      <PageHero eyebrow="Services" title="One team, from setup to everyday use." lead="We plan, build, connect and support your Bitrix24, and build the websites, apps and automation around it, so you never have to chase separate vendors." />
+      <PageHero eyebrow="Services" title="One team, from setup to everyday use." lead="We plan, build, connect and support your Bitrix24, and build the websites, apps and automation around it, so you never have to chase separate vendors." tiles={TILES.services} />
       {groups.map(([title, lead, g], n) => (
         <section key={g} className={n ? 'sec white line' : 'sec'}>
           <div className="wrap">

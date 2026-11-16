@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Hero } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import { CtaBand, JsonLd } from '@/components/ui';
 import { AI_CAPS } from '@/lib/content';
 import { breadcrumbLd, pageMeta, serviceLd } from '@/lib/seo';
@@ -18,17 +20,8 @@ export default function AiPage() {
   return (
     <>
       <JsonLd data={[breadcrumbLd([['AI', '/ai']]), serviceLd({ name: 'Bitrix24 AI setup', serviceType: 'AI implementation', description, path: '/ai' })]} />
-      <section className="sec dark">
-        <div className="wrap stack" style={{ gap: 22 }}>
-          <p className="eyebrow" style={{ margin: 0 }}>AI for real business work</p>
-          <h1 className="d1" style={{ maxWidth: '16ch' }}>Describe the work. Let AI help run it.</h1>
-          <p className="lead">Bitrix24 now brings AI into sales, projects, chat, automation and custom apps. We help you choose what is useful, set it up safely and get your team using it.</p>
-          <div className="row btns">
-            <Link className="btn primary" href="/contact?interest=ai">See AI in a live demo</Link>
-            <Link className="btn ghost" href="/ai/vibe-plus">What is Vibe+?</Link>
-          </div>
-        </div>
-      </section>
+      <Hero eyebrow="AI for real business work" title={['Describe the work. ', 'Let AI help run it.']} lead="Bitrix24 now brings AI into sales, projects, chat, automation and custom apps. We help you choose what is useful, set it up safely and get your team using it." tiles={TILES.ai}
+        actions={<><Link className="btn primary" href="/contact?interest=ai">See AI in a live demo</Link><Link className="btn ghost" href="/ai/vibe-plus">What is Vibe+?</Link></>} />
       <AiNav current="/ai" />
       <section className="sec white">
         <div className="wrap">

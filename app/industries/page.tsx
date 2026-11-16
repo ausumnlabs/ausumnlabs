@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Backdrop } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import type { CSSProperties } from 'react';
 import { CtaBand, JsonLd } from '@/components/ui';
 import { Bubbles } from '@/components/IndustryMotion';
@@ -20,6 +22,7 @@ export default function Industries() {
       <JsonLd data={breadcrumbLd([['Industries', '/industries']])} />
       <section className="ind-hero">
         <Bubbles />
+        <Backdrop tiles={TILES.home} />
         <div className="wrap">
           <span className="ind-pill">Industries · Bitrix24 CRM set up for your trade</span>
           <h1 className="ind-h1">The same platform, <span className="grad">shaped to your trade.</span></h1>

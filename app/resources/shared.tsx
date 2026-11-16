@@ -1,7 +1,8 @@
 import { PageHero, SubNav } from '@/components/ui';
+import { TILES } from '@/lib/hero-tiles';
 
 export function ResHero() {
-  return <PageHero eyebrow="Resources" title="Clear answers before you buy." lead="Plain guides, honest comparisons and the latest Bitrix24 changes." width="15ch" />;
+  return <PageHero eyebrow="Resources" title="Clear answers before you buy." lead="Plain guides, honest comparisons and the latest Bitrix24 changes." tiles={TILES.resources} />;
 }
 
 export function ResNav({ current }: { current: string }) {

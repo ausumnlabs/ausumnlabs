@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Hero } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import { CtaBand, Faq, JsonLd, Screen } from '@/components/ui';
 import { Icon } from '@/components/Icon';
 import { RE_MODULES } from '@/lib/content';
@@ -38,20 +40,9 @@ export default function RealEstate() {
   return (
     <>
       <JsonLd data={[breadcrumbLd([['Real Estate', '/real-estate']]), serviceLd({ name: 'Real estate CRM on Bitrix24', serviceType: 'Real estate CRM implementation', description, path: '/real-estate' }), faqLd(FAQS)]} />
-      <section className="sec dark">
-        <div className="wrap g2" style={{ alignItems: 'center' }}>
-          <div className="stack" style={{ gap: 22 }}>
-            <p className="eyebrow" style={{ margin: 0 }}>Real estate CRM on Bitrix24</p>
-            <h1 className="d1" style={{ fontSize: 'clamp(38px, 4.8vw, 64px)' }}>Built for how property is <span className="serif">sold in India.</span></h1>
-            <p className="lead">Our own real estate modules on Bitrix24, built from daily work with brokers, builders and buyers. Live inventory, smart matching, site visits, WhatsApp, documents and payouts in one system.</p>
-            <div className="row btns">
-              <Link className="btn primary" href="/contact?interest=real-estate">Book a 20-minute demo</Link>
-              <Link className="btn ghost" href="#modules">See the modules</Link>
-            </div>
-          </div>
-          <Screen {...broker.screens[0]} caption={undefined} eager />
-        </div>
-      </section>
+      <Hero eyebrow="Real estate CRM on Bitrix24" title={['Built for how property is ', 'sold in India.']} lead="Our own real estate modules on Bitrix24, built from daily work with brokers, builders and buyers. Live inventory, smart matching, site visits, WhatsApp, documents and payouts in one system." tiles={TILES.realEstate}
+        actions={<><Link className="btn primary" href="/contact?interest=real-estate">Book a 20-minute demo</Link><Link className="btn ghost" href="#modules">See the modules</Link></>}
+        visual={<Screen {...broker.screens[0]} caption={undefined} eager />} />
       <ReNav current="/real-estate" />
 
       <section className="sec" id="modules">

@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Hero } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import { notFound } from 'next/navigation';
 import { CtaBand, Faq, JsonLd, Screen } from '@/components/ui';
 import { Icon } from '@/components/Icon';
@@ -30,21 +32,10 @@ export default async function ReModule({ params }: P) {
   return (
     <>
       <JsonLd data={[breadcrumbLd([['Real Estate', '/real-estate'], [m.name, path]]), serviceLd({ name: m.seoTitle, serviceType: 'Real estate CRM', description: m.seoDesc, path }), faqLd(m.faqs)]} />
-      <section className="sec dark">
-        <div className={hero ? 'wrap g2' : 'wrap'} style={{ alignItems: 'center' }}>
-          <div className="stack" style={{ gap: 20 }}>
-            <span className={m.first ? 'pill ember' : 'pill'}>{m.name} · {m.status}</span>
-            <h1 className="d1" style={{ fontSize: 'clamp(36px, 4.4vw, 60px)', maxWidth: '18ch' }}>{m.title}</h1>
-            <p className="lead">{m.text}</p>
-            <div className="row btns">
-              <Link className="btn primary" href={demo}>Book a 20-minute demo</Link>
-              <Link className="btn ghost" href="/contact?type=audit&interest=real-estate">Audit my current setup</Link>
-            </div>
-            <p className="small">For {m.who.toLowerCase()}. Set up on your own Bitrix24.</p>
-          </div>
-          {hero && <Screen {...hero} caption={undefined} eager />}
-        </div>
-      </section>
+      <Hero eyebrow={`${m.name} · ${m.status}`} title={m.title} lead={m.text} tiles={TILES.realEstate}
+        actions={<><Link className="btn primary" href={demo}>Book a 20-minute demo</Link><Link className="btn ghost" href="/contact?type=audit&interest=real-estate">Audit my current setup</Link></>}
+        note={<span>For {m.who.toLowerCase()}. Set up on your own Bitrix24.</span>}
+        visual={hero ? <Screen {...hero} caption={undefined} eager /> : undefined} />
       <ReNav current={path} />
 
       <section className="sec warm">

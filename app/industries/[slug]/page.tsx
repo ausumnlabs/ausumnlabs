@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Backdrop } from '@/components/Hero';
+import { INDUSTRY_ICONS } from '@/lib/hero-tiles';
 import { notFound } from 'next/navigation';
 import { Check, CtaBand, JsonLd, PageHero, Steps, SubNav } from '@/components/ui';
 import { Bubbles, ScrollStory, WhoWeHelp } from '@/components/IndustryMotion';
@@ -39,6 +41,7 @@ export default async function IndustryPage({ params }: P) {
         <JsonLd data={ld} />
         <section className="ind-hero">
           <Bubbles />
+          <Backdrop tiles={st.segments.map((g, n) => ({ icon: (INDUSTRY_ICONS[i.slug] || [])[n] || 'grid', label: g.who.charAt(0).toUpperCase() + g.who.slice(1), tone: 'hc' as const }))} />
           <div className="wrap">
             <span className="ind-pill">{st.hero.eyebrow}</span>
             <h1 className="ind-h1">{st.hero.title[0]}<span className="grad">{st.hero.title[1]}</span>{st.hero.title[2]}</h1>

@@ -1,4 +1,6 @@
 import { JsonLd } from '@/components/ui';
+import { Backdrop } from '@/components/Hero';
+import { TILES } from '@/lib/hero-tiles';
 import ContactForm, { type Mode } from '@/components/ContactForm';
 import { Icon, type IconName } from '@/components/Icon';
 import { INTERESTS } from '@/lib/form';
@@ -79,7 +81,8 @@ export default async function Contact({ searchParams }: P) {
   return (
     <>
       <JsonLd data={[breadcrumbLd([['Contact', '/contact']]), contactLd]} />
-      <section className="sec dark glow">
+      <section className="sec hero-light">
+        <Backdrop tiles={TILES.contact} compact />
         <div className="wrap g2 c-grid">
           <div className="stack c-left" style={{ gap: 28 }}>
             <div className="stack c-intro" style={{ gap: 18 }}>

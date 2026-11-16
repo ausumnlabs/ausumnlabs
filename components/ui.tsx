@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { Hero } from '@/components/Hero';
+import type { Tile } from '@/lib/hero-tiles';
 
 export function JsonLd({ data }: { data: unknown }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }} />;
@@ -34,17 +36,8 @@ export function Screen({ src, w, h, alt, caption, label, eager }: { src: string;
   );
 }
 
-export function PageHero({ eyebrow, title, lead, children, width = '16ch' }: { eyebrow: string; title: string; lead?: string; children?: ReactNode; width?: string }) {
-  return (
-    <section className="sec dark tight" style={{ paddingTop: 'clamp(56px, 7vw, 96px)' }}>
-      <div className="wrap stack" style={{ gap: 18 }}>
-        <p className="eyebrow" style={{ margin: 0 }}>{eyebrow}</p>
-        <h1 className="d1" style={{ maxWidth: width }}>{title}</h1>
-        {lead && <p className="lead">{lead}</p>}
-        {children}
-      </div>
-    </section>
-  );
+export function PageHero({ eyebrow, title, lead, children, tiles }: { eyebrow: string; title: string; lead?: string; children?: ReactNode; width?: string; tiles?: Tile[] }) {
+  return <Hero eyebrow={eyebrow} title={title} lead={lead} actions={children} tiles={tiles} size="sm" />;
 }
 
 export function SubNav({ label, items, current }: { label: string; items: Array<{ href: string; label: string }>; current: string }) {
