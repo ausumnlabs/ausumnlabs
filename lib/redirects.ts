@@ -11,6 +11,11 @@ const wwwToApex: Redirect = {
 };
 
 const map: Array<[string, string]> = [
+  ['/sitemap_index.xml', '/sitemap.xml'],
+  ['/page-sitemap.xml', '/sitemap.xml'],
+  ['/post-sitemap.xml', '/sitemap.xml'],
+  ['/category-sitemap.xml', '/sitemap.xml'],
+  ['/sureforms_form-sitemap.xml', '/sitemap.xml'],
   ['/bitrix-24', '/bitrix24'],
   ['/tech', '/services/web-development'],
   ['/solutions', '/services'],
