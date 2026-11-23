@@ -541,3 +541,20 @@ a.hchip:hover{background:var(--hc-soft);transform:translateY(-2px)}
   .wa{padding:12px}
 }
 @media (prefers-reduced-motion:reduce){.mq-t{flex-wrap:wrap;width:auto}}
+
+/* Industry module showcase (home) */
+.mods .story-grid{grid-template-columns:150px minmax(0,1.45fr) minmax(0,1fr)}
+.mod-visual{min-width:0;animation:textin .5s ease both}
+.mod-frame{width:100%}
+.mod-img{display:block;width:100%;height:min(460px,58vh);object-fit:cover;object-position:top}
+.mod-board{background:#F4F6F9;padding:14px;min-height:260px;max-height:min(460px,58vh);overflow:hidden}
+.mod-title{margin:0 0 12px;font-weight:700;font-size:15px;color:#14221C}
+.mod-cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.mod-stage{position:relative;display:flex;justify-content:space-between;gap:6px;margin:0 0 8px;padding:7px 8px 7px 10px;border-radius:6px;background:color-mix(in srgb,var(--sc) 22%,#fff);border-left:4px solid var(--sc);font-size:11.5px;font-weight:600;color:#26332C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-stage b{font-weight:700;color:#5D6B63}
+.mod-card{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;padding:10px;border-radius:8px;background:#fff;border:1px solid #E3E8EE;box-shadow:0 1px 2px rgba(12,20,16,.05);font-size:12.5px;line-height:1.35;color:#26332C}
+.mod-card b{font-size:13px;color:#0B6B50}
+.story-item .mod-board,.story-item .mod-img{height:auto;max-height:420px}
+@media (max-width:1100px){.mods .story-grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+@media (max-width:560px){.mod-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.mod-visual{animation:none}}

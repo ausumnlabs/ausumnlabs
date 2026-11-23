@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { Segment, StoryStep } from '@/lib/industry-stories';
+import type { IndustryModule } from '@/lib/module-boards';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -170,6 +171,113 @@ export function ScrollStory({ steps, title, lead, eyebrow, cta, contactHref }: {
             <h3 className="d3">{x.title}</h3>
             <p className="body">{x.text}</p>
             <Card step={x} n={n + 1} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* Industry modules built in Bitrix24, revealed one industry per scroll step. */
+const inrFmt = (n: number) => '₹' + n.toLocaleString('en-IN');
+
+function ModuleFrame({ m }: { m: IndustryModule }) {
+  return (
+    <div className="shot-frame mod-frame">
+      <div className="shot-bar" aria-hidden="true"><i /><i /><i /><span>ausumnlabs.bitrix24.in · {m.name}</span></div>
+      {m.shot ? (
+        <img className="mod-img" src={m.shot.src} width={m.shot.w} height={m.shot.h} alt={m.shot.alt} loading="lazy" decoding="async" />
+      ) : m.board && (
+        <div className="mod-board" role="img" aria-label={`${m.name}: ${m.board.title} board with stages ${m.board.stages.map((s) => s.name).join(', ')}`}>
+          <p className="mod-title">{m.board.title}</p>
+          <div className="mod-cols">
+            {m.board.stages.map((s) => (
+              <div className="mod-col" key={s.name}>
+                <p className="mod-stage" style={{ '--sc': s.color } as CSSProperties}>{s.name}<b>{s.cards.length}</b></p>
+                {s.cards.map(([t, amt]) => (
+                  <div className="mod-card" key={t}><span>{t}</span>{amt ? <b>{inrFmt(amt)}</b> : null}</div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ModuleText({ m, n, total }: { m: IndustryModule; n: number; total: number }) {
+  return (
+    <>
+      <p className="mono-eyebrow hc">{pad(n)} / {pad(total)} — {m.label}</p>
+      <h3 className="d2">{m.name}</h3>
+      <p className="lead">{m.text}</p>
+      <div className="row" style={{ gap: 8 }}>{m.parts.map((t) => <span className="hchip static" key={t}>{t}</span>)}</div>
+      <div><Link className="btn dark-btn" href={m.href}>See the {m.label.toLowerCase()} module →</Link></div>
+    </>
+  );
+}
+
+export function IndustryModules({ modules }: { modules: IndustryModule[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [a, setA] = useState(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const on = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const total = r.height - window.innerHeight;
+        const p = total > 0 ? Math.min(Math.max(-r.top / total, 0), 0.9999) : 0;
+        setA(Math.floor(p * modules.length));
+      });
+    };
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on);
+    return () => { window.removeEventListener('scroll', on); window.removeEventListener('resize', on); cancelAnimationFrame(raf); };
+  }, [modules.length]);
+
+  const go = (n: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const total = el.offsetHeight - window.innerHeight;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + (total * (n + 0.5)) / modules.length, behavior: 'smooth' });
+  };
+
+  const m = modules[a];
+  return (
+    <section className="story-wrap mods" id="modules" aria-label="Bitrix24 modules by industry">
+      <div className="wrap story-intro">
+        <p className="mono-eyebrow">Built and tested in Bitrix24</p>
+        <h2 className="d2">A ready module for <span className="serif hc">your industry.</span></h2>
+        <p className="lead">Each one is a working Bitrix24 setup with its own pipelines, fields and automation. Scroll to see them one by one.</p>
+      </div>
+
+      <div className="story" ref={ref} style={{ height: `${modules.length * 75 + 40}vh` }}>
+        <div className="story-stick">
+          <div className="wrap story-grid">
+            <nav className="story-rail" aria-label="Industries">
+              {modules.map((x, n) => (
+                <button key={x.key} type="button" className={n === a ? 'on' : ''} aria-current={n === a ? 'step' : undefined} onClick={() => go(n)}>
+                  <i />{x.label}
+                </button>
+              ))}
+            </nav>
+            <div className="mod-visual" key={'v' + m.key}><ModuleFrame m={m} /></div>
+            <div className="story-text" key={m.key} aria-live="polite"><ModuleText m={m} n={a + 1} total={modules.length} /></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wrap story-list">
+        {modules.map((x, n) => (
+          <div className="story-item" key={x.key}>
+            <ModuleText m={x} n={n + 1} total={modules.length} />
+            <ModuleFrame m={x} />
           </div>
         ))}
       </div>

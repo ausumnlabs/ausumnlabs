@@ -4,7 +4,8 @@ import { TILES } from '@/lib/hero-tiles';
 import { CtaBand, Faq, JsonLd, Screen } from '@/components/ui';
 import { Icon } from '@/components/Icon';
 import { AiDemo, PlatformExplorer } from '@/components/interactive';
-import { ScrollStory, WhoWeHelp } from '@/components/IndustryMotion';
+import { IndustryModules, ScrollStory, WhoWeHelp } from '@/components/IndustryMotion';
+import { INDUSTRY_MODULES } from '@/lib/module-boards';
 import { CountUp, Showcase } from '@/components/Motion';
 import { HOME_SEGMENTS, HOME_STORY } from '@/lib/industry-stories';
 import type { CSSProperties } from 'react';
@@ -65,6 +66,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <div style={ORANGE}><IndustryModules modules={INDUSTRY_MODULES} /></div>
 
       <section className="dark" style={{ background: 'var(--ink)', borderTop: '1px solid var(--ink3)', paddingBlock: 44 }} aria-label="Enquiry sources we connect">
         <div className="wrap stack" style={{ gap: 20, alignItems: 'center' }}>
