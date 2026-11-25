@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { Segment, StoryStep } from '@/lib/industry-stories';
-import type { IndustryModule } from '@/lib/module-boards';
+import type { Dash, IndustryModule } from '@/lib/module-boards';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -179,7 +179,55 @@ export function ScrollStory({ steps, title, lead, eyebrow, cta, contactHref }: {
 }
 
 /* Industry modules built in Bitrix24, revealed one industry per scroll step. */
-const inrFmt = (n: number) => '₹' + n.toLocaleString('en-IN');
+function Dashboard({ m, d }: { m: IndustryModule; d: Dash }) {
+  const cells = d.grid.groups.flatMap((g) => g.rows.flatMap(([, p]) => [...p]));
+  const first = cells.filter((c) => c === '0').length;
+  const max = Math.max(...d.pipe.rows.map(([, n]) => n));
+  return (
+    <div className="db" role="img" aria-label={`${m.name} demo dashboard: ${d.kpis.map(([v, l]) => `${l} ${v}`).join(', ')}`}>
+      <div className="db-head">
+        <div><p className="db-hello">{d.hello}</p><p className="db-sub">{d.sub}</p></div>
+        <span className="db-tag">{d.tag}</span>
+      </div>
+      <div className="db-kpis">
+        {d.kpis.map(([v, l], i) => <div className={i ? 'db-kpi' : 'db-kpi on'} key={l}><b>{v}</b><span>{l}</span></div>)}
+      </div>
+      <div className="db-panel">
+        <div className="db-ptop"><p className="db-pt">{d.grid.title}</p><span className="db-note">{first} of {cells.length} {d.grid.legend[0][0].toLowerCase()}</span></div>
+        <div className="db-legend">{d.grid.legend.map(([n, c]) => <span key={n}><i style={{ background: c }} />{n}</span>)}</div>
+        <div className="db-groups">
+          {d.grid.groups.map((g) => (
+            <div className="db-group" key={g.name} style={{ '--nc': g.cols.length } as CSSProperties}>
+              <p className="db-gname">{g.name}</p>
+              <div className="db-grid">
+                <span />{g.cols.map((c) => <span className="db-col" key={c}>{c}</span>)}
+                {g.rows.map(([r, p]) => [
+                  <span className="db-row" key={r}>{r}</span>,
+                  ...[...p].map((x, j) => {
+                    const [n, c] = d.grid.legend[+x];
+                    return <span className="db-cell" key={r + j} style={{ background: c }}>{n}</span>;
+                  })
+                ])}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="db-bottom">
+        <div className="db-panel">
+          <p className="db-pt">{d.pipe.title}<small>Open by stage</small></p>
+          {d.pipe.rows.map(([n, v]) => (
+            <div className="db-bar" key={n}><span>{n}</span><i><em style={{ width: `${(v / max) * 100}%` }} /></i><b>{v}</b></div>
+          ))}
+        </div>
+        <div className="db-panel">
+          <p className="db-pt">{d.side.title}</p>
+          {d.side.stats.map(([v, l]) => <div className="db-stat" key={l}><b>{v}</b><span>{l}</span></div>)}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function ModuleFrame({ m }: { m: IndustryModule }) {
   return (
@@ -187,21 +235,7 @@ function ModuleFrame({ m }: { m: IndustryModule }) {
       <div className="shot-bar" aria-hidden="true"><i /><i /><i /><span>ausumnlabs.bitrix24.in · {m.name}</span></div>
       {m.shot ? (
         <img className="mod-img" src={m.shot.src} width={m.shot.w} height={m.shot.h} alt={m.shot.alt} loading="lazy" decoding="async" />
-      ) : m.board && (
-        <div className="mod-board" role="img" aria-label={`${m.name}: ${m.board.title} board with stages ${m.board.stages.map((s) => s.name).join(', ')}`}>
-          <p className="mod-title">{m.board.title}</p>
-          <div className="mod-cols">
-            {m.board.stages.map((s) => (
-              <div className="mod-col" key={s.name}>
-                <p className="mod-stage" style={{ '--sc': s.color } as CSSProperties}>{s.name}<b>{s.cards.length}</b></p>
-                {s.cards.map(([t, amt]) => (
-                  <div className="mod-card" key={t}><span>{t}</span>{amt ? <b>{inrFmt(amt)}</b> : null}</div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      ) : m.dash && <Dashboard m={m} d={m.dash} />}
     </div>
   );
 }
